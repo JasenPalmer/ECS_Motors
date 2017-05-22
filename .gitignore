@@ -1,4 +1,6 @@
- 
+#other stuff
+.directory 
+
 # Logs
 logs
 *.log
