@@ -1,0 +1,58 @@
+// Libraries
+@import "_lesshat.less";
+
+// Settings
+@bgColor:             #fafafa;
+@bgColorDarker:       #ebf1f8;
+@borderColor:         #d2d4d6;
+@textColor:           #525b66;
+@textColorLight:      saturate(lighten(@textColor, 20%), 5%);
+@shadowColor:         darken(@bgColor, 85%);
+@nameColor:           #fff;
+@menuBgColor:         #b8d4f4;
+@secondaryColor:      #5881b0;
+@secondaryColorLight: lighten(@secondaryColor, 7%);
+@secondaryBgColor:    #dfe9f5;
+@tertriaryColor:      #e59010;
+@tertriaryBgColor:    #fce3bd;
+
+// Common Styles
+@import "styles.less";
+
+/* ==========================================================================
+   Custom Styles
+   ========================================================================== */
+
+.box-light .box-heading {
+	.gradient(linear-gradient(top, mix(@secondaryBgColor, #fff, 50%) 0%, @secondaryBgColor 100%));
+	border: 1px solid desaturate(lighten(@secondaryColor, 22%), 20%);
+		border-bottom-color: desaturate(lighten(@secondaryColor, 18%), 20%);
+	color: saturate(lighten(@secondaryColor, 5%), -20%);
+}
+
+.progress-bar {
+	
+	div {
+		.gradient(linear-gradient(top, mix(@tertriaryBgColor, #fff, 50%) 0%, darken(@tertriaryBgColor, 25%) 100%));
+		border: 1px solid desaturate(lighten(@tertriaryColor, 5%), 20%);
+		border-bottom-color: desaturate(lighten(@tertriaryColor, 0%), 20%);
+		box-shadow: inset 0 1px 0 fade(#fff, 0%), inset 0 0 0 1px fade(#fff, 50%), 0 1px 1px fade(@shadowColor, 5%);
+	}
+}
+
+ul.extended .number {
+	color: saturate(darken(@tertriaryColor, 6%), -25%);
+}
+
+.shortcuts {
+	
+	.ico {
+		.gradient(linear-gradient(top, mix(@secondaryBgColor, #fff, 50%) 0%, @secondaryBgColor 100%));
+		border: 1px solid desaturate(lighten(@secondaryColor, 20%), 20%);
+		border-bottom-color: desaturate(lighten(@secondaryColor, 17%), 20%);
+		
+		[class^=icon-] {
+			color: saturate(lighten(@secondaryColor, 11%), -15%);
+		}
+	}
+}

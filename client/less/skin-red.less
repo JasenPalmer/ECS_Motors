@@ -1,0 +1,80 @@
+// Libraries
+@import "_lesshat.less";
+
+// Settings
+@bgColor:             #fafafa;
+@bgColorDarker:       #f7eeeb;
+@borderColor:         #d6d3d2;
+@textColor:           #665752;
+@textColorLight:      saturate(lighten(@textColor, 20%), 5%);
+@shadowColor:         darken(@bgColor, 85%);
+@nameColor:           #fff;
+@menuBgColor:         #f5a88a;
+@secondaryColor:      #d35c2d;
+@secondaryColorLight: lighten(@secondaryColor, 7%);
+@secondaryBgColor:    #f5e5df;
+@tertriaryColor:      #73bddf;
+@tertriaryBgColor:    #e3f6ff;
+
+// Common Styles
+@import "styles.less";
+
+/* ==========================================================================
+   Custom Styles
+   ========================================================================== */
+
+.button.secondary {
+	color: saturate(lighten(@secondaryColor, 5%), -15%);
+	
+	&:hover,
+	&:active {
+		color: saturate(darken(@secondaryColor, 0%), -15%);
+	}
+}
+
+.button.tertriary {
+	color: saturate(darken(@tertriaryColor, 5%), -25%);
+	
+	&:hover,
+	&:active {
+		color: saturate(darken(@tertriaryColor, 10%), -25%);
+	}
+}
+
+.tabs-vertical .active a {
+	color: saturate(darken(@secondaryColor, 0%), -15%);
+}
+
+.box-light .box-heading {
+	.gradient(linear-gradient(top, mix(lighten(@menuBgColor, 14%), #fff, 50%) 0%, lighten(@menuBgColor, 14%) 100%));
+	border: 1px solid desaturate(darken(@menuBgColor, 3%), 30%);
+	border-bottom-color: desaturate(darken(@menuBgColor, 8%), 30%);
+	color: saturate(darken(@menuBgColor, 23%), -40%);
+}
+
+.progress-bar {
+	
+	div {
+		.gradient(linear-gradient(top, mix(@tertriaryBgColor, #fff, 50%) 0%, darken(@tertriaryBgColor, 25%) 100%));
+		border: 1px solid desaturate(lighten(@tertriaryColor, 0%), 20%);
+		border-bottom-color: desaturate(darken(@tertriaryColor, 10%), 20%);
+		box-shadow: inset 0 1px 0 fade(#fff, 0%), inset 0 0 0 1px fade(#fff, 50%), 0 1px 1px fade(@shadowColor, 5%);
+	}
+}
+
+ul.extended .number {
+	color: saturate(darken(@tertriaryColor, 6%), -25%);
+}
+
+.shortcuts {
+	
+	.ico {
+		.gradient(linear-gradient(top, mix(@secondaryBgColor, #fff, 50%) 0%, @secondaryBgColor 100%));
+		border: 1px solid desaturate(lighten(@secondaryColor, 20%), 20%);
+		border-bottom-color: desaturate(lighten(@secondaryColor, 16%), 20%);
+		
+		[class^=icon-] {
+			color: saturate(lighten(@secondaryColor, 11%), -25%);
+		}
+	}
+}

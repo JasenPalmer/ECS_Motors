@@ -1,0 +1,74 @@
+// Libraries
+@import "_lesshat.less";
+
+// Settings
+@bgColor:             #fcfbf5;
+@bgColorDarker:       #f7f3e7;
+@borderColor:         #dbd3ba;
+@textColor:           #66604d;
+@textColorLight:      saturate(lighten(@textColor, 20%), 5%);
+@shadowColor:         darken(@bgColor, 85%);
+@nameColor:           #ffedc0;
+@menuBgColor:         #efc75b;
+@secondaryColor:      #7a8c00;
+@secondaryColorLight: lighten(@secondaryColor, 7%);
+@secondaryBgColor:    #e9f1c0;
+@tertriaryColor:      #e6b40f;
+@tertriaryBgColor:    #fceebe;
+
+// Common Styles
+@import "styles.less";
+
+/* ==========================================================================
+   Custom Styles
+   ========================================================================== */
+   
+#mainnav {
+	border-bottom: 1px solid saturate(darken(@menuBgColor, 20%), -10%);
+	
+	li {
+		color: darken(@menuBgColor, 38%);
+		text-shadow: 0 1px 0 lighten(@menuBgColor, 25%);
+		
+		&.active {
+			.gradient(linear-gradient(top, fade(darken(@menuBgColor, 20%), 0%) 20%, fade(darken(@menuBgColor, 20%), 50%) 60%, fade(darken(@menuBgColor, 20%), 0%) 90%));
+			text-shadow: 0 1px 0 lighten(@menuBgColor, 20%);
+			
+			[class^=helper],
+			[class^=helper]::before,
+			[class^=helper]::after {
+				.gradient(linear-gradient(top, fade(darken(@menuBgColor, 30%), 0%) 15%, fade(darken(@menuBgColor, 30%), 60%) 60%, fade(darken(@menuBgColor, 30%), 0%) 95%));
+			}
+		
+			[class^=icon-],
+			a:active [class^=icon-] {
+				color: saturate(darken(@menuBgColor, 30%), -25%);
+			}
+		}
+	}
+	
+	[class^=icon-] {
+		color: saturate(darken(@menuBgColor, 7%), -20%);
+	}
+}
+
+.button.secondary {
+	color: @secondaryColor;
+	
+	&:hover,
+	&:active {
+		color: darken(@secondaryColor, 3%);
+	}
+}
+
+.tabs-vertical .active a {
+	color: @secondaryColor;
+}
+
+ol > li::before {
+	color: @menuBgColor;
+}
+
+.box-light .box-heading {
+	color: saturate(darken(@menuBgColor, 18%), -40%);
+}

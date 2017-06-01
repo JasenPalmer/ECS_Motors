@@ -1,0 +1,100 @@
+// Libraries
+@import "_lesshat.less";
+
+// Settings
+@bgColor:             #fcfcfa;
+@bgColorDarker:       #f7f3eb;
+@borderColor:         #d6d5d2;
+@textColor:           #665e52;
+@textColorLight:      saturate(lighten(@textColor, 20%), 5%);
+@shadowColor:         darken(@bgColor, 85%);
+@nameColor:           #fff;
+@menuBgColor:         #dab377;
+@secondaryColor:      #ab7e36;
+@secondaryColorLight: lighten(@secondaryColor, 7%);
+@secondaryBgColor:    #f5ecdf;
+@tertriaryColor:      saturate(lighten(#e59010, 5%), -10%);
+@tertriaryBgColor:    saturate(lighten(#fce3bd, 5%), -10%);
+
+// Common Styles
+@import "styles.less";
+
+/* ==========================================================================
+   Custom Styles
+   ========================================================================== */
+
+#mainnav {
+	border-bottom: 1px solid saturate(darken(@menuBgColor, 20%), -10%);
+	
+	li {
+		color: darken(@menuBgColor, 41%);
+		text-shadow: 0 1px 0 lighten(@menuBgColor, 25%);
+		
+		&.active {
+			.gradient(linear-gradient(top, fade(darken(@menuBgColor, 20%), 0%) 20%, fade(darken(@menuBgColor, 20%), 50%) 60%, fade(darken(@menuBgColor, 20%), 0%) 90%));
+			text-shadow: 0 1px 0 lighten(@menuBgColor, 20%);
+			
+			[class^=helper],
+			[class^=helper]::before,
+			[class^=helper]::after {
+				.gradient(linear-gradient(top, fade(darken(@menuBgColor, 30%), 0%) 15%, fade(darken(@menuBgColor, 30%), 60%) 60%, fade(darken(@menuBgColor, 30%), 0%) 95%));
+			}
+		
+			[class^=icon-],
+			a:active [class^=icon-] {
+				color: saturate(darken(@menuBgColor, 27%), -7%);
+			}
+		}
+	}
+	
+	[class^=icon-] {
+		color: saturate(darken(@menuBgColor, 1%), -5%);
+	}
+}
+
+.button.secondary {
+	color: darken(@secondaryColor, 5%);
+	
+	&:hover,
+	&:active {
+		color: darken(@secondaryColor, 10%);
+	}
+}
+
+.tabs-vertical .active a {
+	color: darken(@secondaryColor, 5%);
+}
+
+.box-light .box-heading {
+	.gradient(linear-gradient(top, mix(@secondaryBgColor, #fff, 50%) 0%, @secondaryBgColor 100%));
+	border: 1px solid desaturate(lighten(@secondaryColor, 24%), 20%);
+	border-bottom-color: desaturate(lighten(@secondaryColor, 19%), 20%);
+	color: saturate(lighten(@secondaryColor, 5%), -30%);
+}
+
+.progress-bar {
+	
+	div {
+		.gradient(linear-gradient(top, mix(@tertriaryBgColor, #fff, 50%) 0%, darken(@tertriaryBgColor, 25%) 100%));
+		border: 1px solid desaturate(lighten(@tertriaryColor, 0%), 20%);
+		border-bottom-color: desaturate(darken(@tertriaryColor, 10%), 20%);
+		box-shadow: inset 0 1px 0 fade(#fff, 0%), inset 0 0 0 1px fade(#fff, 50%), 0 1px 1px fade(@shadowColor, 5%);
+	}
+}
+
+ul.extended .number {
+	color: saturate(darken(@tertriaryColor, 6%), -25%);
+}
+
+.shortcuts {
+	
+	.ico {
+		.gradient(linear-gradient(top, mix(@secondaryBgColor, #fff, 50%) 0%, @secondaryBgColor 100%));
+		border: 1px solid desaturate(lighten(@secondaryColor, 22%), 20%);
+		border-bottom-color: desaturate(lighten(@secondaryColor, 18%), 20%);
+		
+		[class^=icon-] {
+			color: saturate(lighten(@secondaryColor, 14%), -20%);
+		}
+	}
+}

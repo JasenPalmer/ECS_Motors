@@ -1,0 +1,73 @@
+// Libraries
+@import "_lesshat.less";
+
+// Settings
+@bgColor:             #fafafa;
+@bgColorDarker:       #f0f1f5;
+@borderColor:         #d2d3d6;
+@textColor:           #626366;
+@textColorLight:      saturate(lighten(@textColor, 20%), 5%);
+@shadowColor:         darken(@bgColor, 85%);
+@nameColor:           #fff;
+@menuBgColor:         #d0d4db;
+@secondaryColor:      #5872b0;
+@secondaryColorLight: lighten(@secondaryColor, 7%);
+@secondaryBgColor:    #dfe5f4;
+@tertriaryColor:      lighten(@textColorLight, 15%);
+@tertriaryBgColor:    lighten(@menuBgColor, 10%);
+
+// Common Styles
+@import "styles.less";
+
+/* ==========================================================================
+   Custom Styles
+   ========================================================================== */
+
+#mainnav {
+	border-bottom: 1px solid saturate(darken(@menuBgColor, 20%), -10%);
+	
+	li {
+		color: darken(@menuBgColor, 41%);
+		text-shadow: 0 1px 0 lighten(@menuBgColor, 25%);
+		
+		&.active {
+			.gradient(linear-gradient(top, fade(darken(@menuBgColor, 20%), 0%) 20%, fade(darken(@menuBgColor, 20%), 50%) 60%, fade(darken(@menuBgColor, 20%), 0%) 90%));
+			text-shadow: 0 1px 0 lighten(@menuBgColor, 20%);
+			
+			[class^=helper],
+			[class^=helper]::before,
+			[class^=helper]::after {
+				.gradient(linear-gradient(top, fade(darken(@menuBgColor, 30%), 0%) 15%, fade(darken(@menuBgColor, 30%), 60%) 60%, fade(darken(@menuBgColor, 30%), 0%) 95%));
+			}
+		
+			[class^=icon-],
+			a:active [class^=icon-] {
+				color: saturate(darken(@menuBgColor, 30%), -7%);
+			}
+		}
+	}
+	
+	[class^=icon-] {
+		color: saturate(darken(@menuBgColor, 7%), -5%);
+	}
+}
+
+.box-light .box-heading {
+	.gradient(linear-gradient(top, mix(@tertriaryBgColor, #fff, 50%) 0%, @tertriaryBgColor 100%));
+	border: 1px solid desaturate(lighten(@tertriaryColor, 0%), 20%);
+	border-bottom-color: desaturate(lighten(@tertriaryColor, -3%), 20%);
+	color: saturate(darken(@tertriaryColor, 17%), -15%);
+}
+
+.shortcuts {
+	
+	.ico {
+		.gradient(linear-gradient(top, mix(@tertriaryBgColor, #fff, 50%) 0%, @tertriaryBgColor 100%));
+		border: 1px solid desaturate(darken(@tertriaryColor, 4%), 20%);
+		border-bottom-color: desaturate(darken(@tertriaryColor, 6%), 20%);
+		
+		[class^=icon-] {
+			color: saturate(darken(@tertriaryColor, 10%), -35%);
+		}
+	}
+}

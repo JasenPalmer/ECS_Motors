@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Styles For Browsers With JavaScript Disabled
+   ========================================================================== */
+
+@import "_lesshat.less";
+
+html {
+	background: #000 url(../img/background-2.jpg) no-repeat fixed center center;
+	background-size: cover;
+}
+
+#header,
+#container,
+#footer {
+	visibility: visible;
+	opacity: 1;
+	.transform(none);
+}
+
+.filter-panes > div,
+.content-switch .panes > div,
+.tabs + .panes > div,
+.tabs-vertical + .panes > div {
+	display: block;
+}
+
+#portfolio-grid > li {
+	display: inline-block;
+	opacity: 1;
+}
+
+.box-dark + #postcard-container {
+	display: none;
+}
+
+#portfolio-items,
+.filter-tabs,
+.content-switch .controls,
+a.next-slide {
+	display: none;
+}
+
+#portfolio-grid li a {
+
+	img {
+		.transition(all .15s);
+	}
+	
+	&:hover {
+
+		img {
+			opacity: .1;
+		}
+		
+	}
+}
+
+.slider > .items > div + div {
+	margin-top: 30px;
+}
+
+.panes > div {
+	margin-bottom: 40px;
+}
+
+#mainnav li.active a {
+	
+	&:before,
+	&:after {
+		content: "";
+		display: block;
+		.size(1px, 100%);
+		position: absolute;
+		top: 0;
+		left: 0;
+		.gradient(linear-gradient(top, fade(#000, 0%) 15%, fade(#000, 20%) 60%, fade(#000, 0%) 95%));
+	}
+	
+	&:after {
+		left: auto;
+		right: 0;
+	}
+}
