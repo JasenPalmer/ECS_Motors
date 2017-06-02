@@ -67,7 +67,9 @@ $(document).ready(function(e) {
 		$('#username').val("");
 		$('#email').val("");
 		$('#password').val("");
+		$('#register-suc').modal();
 	});
+
 
 	$('#srch-btn').click(function() {
 		var query = $('#srch-trm').val();
