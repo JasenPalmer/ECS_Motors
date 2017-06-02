@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width = device-widtrh, initial-scale = 1">
+		
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="homepage.js"></script>
+
+		<title><%= title %></title>
+	</head>
+	<body>
+		<!-- Navigation bar -->
+		<div class="navbar navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+				<a class="navbar-brand" href="/"><%= title %></a>
+				</div>
+				<!-- Navigation tabs -->
+	            <ul class="nav navbar-nav navbar-left">
+	              <li><a href="#">New Cars</a></li>
+	              <li><a href="#">Used Cars</a></li>
+	              <li><a href="#">Parts</a></li>
+	              <li><a href="#">Finance</a></li>
+	              <li><a href="#">Contact</a></li>
+	            </ul>
+	            <ul class="nav navbar-nav navbar-right">
+	            <!-- Seacrch and login -->
+	            <li>
+	            	<form class="navbar-form" role="search">
+	            		<div class="input-group search-box">
+	            			<input class="form-control" placeholder="Search" type="text" name="srch-term" id="srch-trm">
+	            			<div class="input-group-btn">
+	            				<button id="srch-btn" class="btn btn-default" type="submit">
+	            					<i class="glyphicon glyphicon-search"></i>
+	            				</button>
+	            			</div>
+	            	</form>
+	            <li><a id="login" href="#">Login/Register</a></li>
+	            </ul>
+			</div>
+		</div>
+
+		<!-- Carousel -->
+		<div class="container">
+			<div id="carCarousel" class="carousel slide" data-ride="carousel">
+				<ol class="carousel-indicators">
+					<li data-target="#carCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#carCarousel" data-slide-to="1"></li>
+					<li data-target="#carCarousel" data-slide-to="2"></li>
+				</ol>
+				<!-- Carousel item 1 -->
+				<div class="carousel-inner">
+					<div class="item active">
+						<div class="slide1"></div>
+					</div>
+					<!-- Carousel item 2 -->
+					<div class="item">
+						<div class="slide2"></div>
+					</div>
+					<!-- Carousel item 3 -->
+					<div class="item">
+						<div class="slide3"></div>
+					</div>
+					<!-- More items can be add here but also need to update css file (style.css) -->
+				</div>
+				<a class="left carousel-control" href="#carCarousel" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left"> </span>
+				</a>
+				<a class="right carousel-control" href="#carCarousel" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right"></span>
+				</a>
+			</div>
+		</div>
+		
+		<!-- Login modal -->
+		<div id="loginReq" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+			    <div class="modal-content">
+					<div class="modal-header">
+				        <h4 class="modal-title">Login / Register</h4>
+					</div>
+					<div class="modal-body">
+			       		<form>
+			       			<div class="form-group">
+			       				<label for="user"><span class="glyphicon glyphicon-user"></span> Username</label>
+             					<input type="text" class="form-control" id="user" placeholder="Enter email">
+             					<p><a href="#">Forgot your username?</a></p>
+			       			</div>
+			       			<div class="form-group">
+			       				<label for="pass"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+            					<input type="password" class="form-control" id="pass" placeholder="Enter password">
+            					<p><a href="#">Forgot your password?</a></p>
+			       			</div>
+			       		</form>
+			       		<button id="submitLogin" type="submit" class="btn btn-success btn-block">Login</button>
+					</div>
+					<div class="modal-footer">
+			        	<button type="button" class="btn btn-info btn-block" id="register">Register</button>
+			        	<br>
+			        	<div class="strike">
+			        		<span>or</span>
+			        	</div>
+			        	<div id="google-login">
+			        		<button type="button" class="btn btn-link "><img src="/img/google-icon-small.png"></button>
+			        	</div>
+					</div>
+			    </div>
+			</div>
+		</div>
+
+		<!-- Latest Listings -->
+		<div style="padding-top: 50px;" class="container">
+			<div class="strike">
+			<span><h2>Latest Deals</h2></span>
+			</div>
+		</div>
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="container">
+				<p>This is the footer</p>
+			</div>
+		</footer>
+	</body>
+</html>
