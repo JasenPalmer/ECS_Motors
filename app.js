@@ -10,7 +10,13 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var bcrypt = require('bcrypt');
 var session = require('express-session');
 
+<<<<<<< HEAD
 var port = process.env.PORT || 8080;
+=======
+var index = require('./routes/index');
+var users = require('./routes/users');
+var search = require('./routes/search');
+>>>>>>> :mag: add scafolding for search (red)
 
 var app = express();
 
