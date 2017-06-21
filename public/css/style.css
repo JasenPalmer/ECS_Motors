@@ -66,3 +66,10 @@ body {
  -webkit-box-shadow:none; 
  border-color:#cccccc; 
 }
+
+.img {
+	position: relative;
+	float: left;
+	width: 100px;
+	height: 100px;
+}

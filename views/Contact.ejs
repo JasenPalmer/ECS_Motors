@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
-		<script src="homepage.js"></script>
+		<script src="newcars.js"></script>
 
 		<title><%= title %></title>
 	</head>
@@ -22,8 +22,8 @@
 				</div>
 				<!-- Navigation tabs -->
 	            <ul class="nav navbar-nav navbar-left">
-	              <li ><a href="/cars">Cars</a></li>
-	              <li><a href="/contact">Contact</a></li>
+	              <li><a href="/cars">Cars</a></li>
+	              <li class="active"><a href="/contact">Contact</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
 	            <!-- Seacrch and login -->
@@ -42,38 +42,6 @@
 			</div>
 		</div>
 
-		<!-- Carousel -->
-		<div class="container">
-			<div id="carCarousel" class="carousel slide" data-ride="carousel">
-				<ol class="carousel-indicators">
-					<li data-target="#carCarousel" data-slide-to="0" class="active"></li>
-					<li data-target="#carCarousel" data-slide-to="1"></li>
-					<li data-target="#carCarousel" data-slide-to="2"></li>
-				</ol>
-				<!-- Carousel item 1 -->
-				<div class="carousel-inner">
-					<div class="item active">
-						<div class="slide1"></div>
-					</div>
-					<!-- Carousel item 2 -->
-					<div class="item">
-						<div class="slide2"></div>
-					</div>
-					<!-- Carousel item 3 -->
-					<div class="item">
-						<div class="slide3"></div>
-					</div>
-					<!-- More items can be add here but also need to update css file (style.css) -->
-				</div>
-				<a class="left carousel-control" href="#carCarousel" data-slide="prev">
-					<span class="glyphicon glyphicon-chevron-left"> </span>
-				</a>
-				<a class="right carousel-control" href="#carCarousel" data-slide="next">
-					<span class="glyphicon glyphicon-chevron-right"></span>
-				</a>
-			</div>
-		</div>
-		
 		<!-- Login modal -->
 		<div id="loginReq" class="modal fade" role="dialog">
 			<div class="modal-dialog">
@@ -147,7 +115,7 @@
 			    </div>
 			</div>
 		</div>
-
+		<!-- Resister Successful -->
 		<div id="register-suc" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 			    <div class="modal-content">
@@ -164,12 +132,6 @@
 			</div>
 		</div>
 
-		<!-- Latest Listings -->
-		<div style="padding-top: 50px;" class="container">
-			<div class="strike">
-			<span><h2>Latest Deals</h2></span>
-			</div>
-		</div>
 		<!-- Footer -->
 		<footer class="footer">
 			<div class="container">

@@ -21,6 +21,35 @@ router.get('/', function(req, res, next) {
    });
 });
 
+router.get('/cars', function(req, res) {
+	res.render('Cars', {
+		title: 'ECS Motors'
+	});
+});
+
+router.get('/contact', function(req, res) {
+	res.render('Contact', {
+		title: 'ECS Motors'
+	});
+});
+
+router.get('/newcars/1', function(req, res) {
+	var query = client.query("SELECT * FROM cars WHERE id = 1;");
+	var results = [];
+	//Stream results back one row at a time
+	query.on('row',function(row){
+		results.push(row);
+	});
+
+	//After all data is returned, close connection and return results
+	query.on('end', function(){
+		//client.end();
+		res.send(results);
+	});
+});
+
+
+
 router.post('/',function(req,res) {
 
 });
