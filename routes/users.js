@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pg = require('pg');
 
+
 var client = new pg.Client({
 	user: 'ldbgswgxwuvsjp',
 	password: '088cf36a1362fd7cf2b231a5d982510df58203b3a4d0b2495ca8d8fe361cccd6',
@@ -12,6 +13,7 @@ var client = new pg.Client({
 });
 
 client.connect();
+
 
 /* GET users listing. */
 router.put('/', function(req, res, next) {

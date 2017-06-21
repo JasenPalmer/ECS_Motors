@@ -1,8 +1,10 @@
+
+
+
 $(document).ready(function(e) {
 
 	$('#login').click(function() {
 		$('#loginReq').modal();
-		//$('#user').focus();
 	});
 
 	$('#submitLogin').click(function () {
@@ -70,12 +72,18 @@ $(document).ready(function(e) {
 		$('#register-suc').modal();
 	});
 
-
 	$('#srch-btn').click(function() {
 		var query = $('#srch-trm').val();
 		if(query === ""){return;}
 		alert("Search for "+query);
 		// send query to the database
+	});
+
+	$('#google-login').click(function () {
+		$.ajax({
+			url: '/auth',
+			method: 'GET'
+		});
 	});
 
 });
