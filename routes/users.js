@@ -14,8 +14,7 @@ var client = new pg.Client({
 
 client.connect();
 
-
-/* GET users listing. */
+/*PUT new user into database */
 router.put('/', function(req, res, next) {
 	console.log("HERE");
 	console.log(req.body);
