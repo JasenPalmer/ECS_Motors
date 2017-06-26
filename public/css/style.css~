@@ -1,8 +1,6 @@
 
 body {
-	background-image: url(../img/large.jpg);
-    background-size: 100%;
-    background-repeat: no-repeat;
+	background-image: url(../img/large.png);
 }
 
 .slide1{
@@ -27,30 +25,6 @@ body {
 	background-size: cover;
 }
 
-.slide4{
-    background-image: url(../img/carCarousel4.jpg);
-    height: 500px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-}
-
-.slide5{
-    background-image: url(../img/carCarousel5.jpg);
-    height: 500px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-}
-
-.slide6{
-    background-image: url(../img/carCarousel6.jpg);
-    height: 500px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-}
-
 .strike {
         display: block;
         text-align: center;
@@ -71,14 +45,6 @@ body {
     width: 9999px;
     height: 1px;
     background: lightgrey;
-}
-
-.navbar-header{
-    background-image: url(../img/container.jpg);
-}
-
-#carCarousel{
-    background-image: url(../img/container.jpg);
 }
 
 .strike > span:before {
@@ -122,8 +88,6 @@ body {
     margin : auto;
     padding: 20px;
 }
-
-
 
 input[id = fname], select, textarea {
     width: 100%;

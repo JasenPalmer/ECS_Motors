@@ -17,6 +17,12 @@ var client = new pg.Client({
 
 client.connect();
 
+/*googlePass.use('facebook', new FacebookStrategy({
+  clientID        : fbConfig.appID,
+  clientSecret    : fbConfig.appSecret,
+  callbackURL     : fbConfig.callbackUrl
+},*/
+
 // passport.use(new LocalStrategy (
 // 	function(username, password, done) {
 // 		User.findOne({username: username}, function(err, user) {
@@ -31,6 +37,7 @@ client.connect();
 // 		});
 // 	}
 // ));
+
 
 googlePass.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
