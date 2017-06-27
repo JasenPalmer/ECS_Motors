@@ -44,4 +44,16 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// Add headers
+app.use(function (req, res, next) {
+ // Website you wish to allow to connect
+ res.setHeader('Access-Control-Allow-Origin', '/auth')
+ // // Request methods you wish to allow
+ res.setHeader('Access-Control-Allow-Methods', 'GET');
+ // Request headers you wish to allow ,
+ res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-AllowHeaders');
+ // Pass to next layer of middleware
+ next();
+});
+
 module.exports = app;

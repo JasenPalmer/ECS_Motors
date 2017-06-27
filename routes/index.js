@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var pg = require('pg');
+
 var googlePass = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 //var passport = require('passport', LocalStrategy = require('passport-local').Strategy;
@@ -16,12 +17,6 @@ var client = new pg.Client({
 
 
 client.connect();
-
-/*googlePass.use('facebook', new FacebookStrategy({
-  clientID        : fbConfig.appID,
-  clientSecret    : fbConfig.appSecret,
-  callbackURL     : fbConfig.callbackUrl
-},*/
 
 // passport.use(new LocalStrategy (
 // 	function(username, password, done) {
@@ -42,7 +37,7 @@ client.connect();
 googlePass.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
-	callbackURL: "/auth/callback"
+	callbackURL: "https://ecsmotors.herokuapp.com/auth/callback"
 	},
 	function(accessToken, refreshToken, profile, done) {
 		User.findOrCreate({googleId: profile.id}, function(err, user) {
@@ -51,12 +46,13 @@ googlePass.use(new GoogleStrategy( {
 	}
 ));
 
-router.get('/auth', 
+router.get('/auth/google', 
 	googlePass.authenticate('google', 
-		{scope:['https://www.googleapis/com/auth/plus.login']})
+		{scope:['openid']})
 	);
 
-router.get('/auth/callback', googlePass.authenticate('google', {failureRedirect: '/'}),
+router.get('/auth/callback', 
+	googlePass.authenticate('google', {failureRedirect: '/'}),
 	function(req, res) {
 		res.redirect('/');
 	});
