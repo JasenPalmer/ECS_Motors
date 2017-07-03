@@ -246,6 +246,7 @@ app.get('/logout', function(req, res){
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
+	console.log("REQ.USER: "+req.user);
   res.render('index', { 
   	title: 'ECS Motors',
   	user: req.user
