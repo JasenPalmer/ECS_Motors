@@ -51,7 +51,7 @@ googlePass.deserializeUser(function(obj, done) {
 googlePass.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
-	callbackURL: "http://localhost:3000/auth/google/callback",
+	callbackURL: "https://ecsmotors.herokuapp.com/auth/google/callback",
 	passReqToCallback: true
 	},
 	function(request, accessToken, refreshToken, profile, done) {
