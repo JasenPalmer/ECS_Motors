@@ -60,7 +60,7 @@ googlePass.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
 	callbackURL: "https://ecsmotors.herokuapp.com/auth/google/callback",
-	//passReqToCallback: true
+	passReqToCallback: true
 	},
 	function(request, accessToken, refreshToken, profile, done) {
 	    process.nextTick(function () {
