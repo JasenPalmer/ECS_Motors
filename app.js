@@ -47,8 +47,8 @@ app.use(googlePass.initialize());
 app.use(googlePass.session());
 
 googlePass.serializeUser(function(user, done) {
-	console.log("serializeUser: "+user.token);
-	done(null, user.token);
+	console.log("serializeUser: "+user.id);
+	done(null, user.id);
 });
 
 googlePass.deserializeUser(function(token, done) {
@@ -100,18 +100,19 @@ function createNewUser(profile, accessToken) {
 		'lastname': lastname,
 		'username': username,
 		'email': email,
-		'token': token
+		'id': token
 	};
 	return user;
 }
 
 function saveUser(user) {
 	var q = squel.insert().into("users").setFieldsRows([{
+			id: user.id,
 			firstname: user.firstname, 
 			lastname: user.lastname, 
 			username: user.username, 
-			email: user.email, 
-			token: user.token}
+			email: user.email
+		}
 	]).toString();
 
 	//INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.token+"');";
