@@ -1,7 +1,6 @@
 $(document).ready(function(e) {
 
 	$('.carClick').click(function() {
-		
 		var id = $(this).attr("id"); //get the car id number
 		var imgSrc = $(this).attr("src");
 		console.log("Image: "+imgSrc);

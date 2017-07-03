@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var pg = require('pg');
 
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+
 var googlePass = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 //var passport = require('passport', LocalStrategy = require('passport-local').Strategy;
@@ -15,8 +19,10 @@ var client = new pg.Client({
 	ssl: true
 });
 
-
 client.connect();
+
+router.use(googlePass.initialize());
+router.use(googlePass.session());
 
 // passport.use(new LocalStrategy (
 // 	function(username, password, done) {
@@ -33,29 +39,90 @@ client.connect();
 // 	}
 // ));
 
+googlePass.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+googlePass.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
 
 googlePass.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
-	callbackURL: "https://ecsmotors.herokuapp.com/auth/callback"
+	callbackURL: "http://localhost:3000/auth/google/callback",
+	passReqToCallback: true
 	},
-	function(accessToken, refreshToken, profile, done) {
-		User.findOrCreate({googleId: profile.id}, function(err, user) {
-			return done(err, user);
-		});
-	}
+	function(request, accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+    	//return done(null, profile);
+    	var user = isUser(profile, accesToken);
+    	if(user) {
+    		return done(null, user);
+    	}else {
+    		console.log("didnt find a user, creating one");
+    		var newUser = newUser(profile, accessToken);
+    		if(!newUser) {
+    			return done(null);
+    		}
+    		return done(null, newUser);
+    	}
+    });
+  }
 ));
+
+function newUser(profile, accessToken) {
+	//var firstname = "thisisaname";
+	console.log(profile);
+	console.log(profile.displayname);
+	var q = "INSERT INTO user (firstname, token) VALUES ('thisisaname', '"+accessToken+"');";
+	//var q = "INSERT INTO todo (item, completed) VALUES ('"+req.body.item+"', "+req.body.completed+");";
+	console.log(q);
+	var query = client.query(q, function(err) {
+		if(err) {
+			return false;
+		}
+		return true;
+	});
+
+	//saveUser(newUser);
+}
+
+function saveUser(newUser) {
+	
+}
+
+function isUser(profile, accessToken) {
+	var query = client.query("SELECT * FROM users WHERE token = "+accessToken+";");
+	var results = [];
+	query.on('row',function(row){
+		results.push(row);
+	});
+	if(results.length = 0) {
+		return false;
+	}
+	else {
+		console.log("Found a user");
+		return results[0];
+	}
+}
 
 router.get('/auth/google', 
 	googlePass.authenticate('google', 
-		{scope:['openid']})
-	);
+		{scope:['openid email profile'], failwithError: true})
+);
 
-router.get('/auth/callback', 
-	googlePass.authenticate('google', {failureRedirect: '/'}),
-	function(req, res) {
-		res.redirect('/');
-	});
+router.get( '/auth/google/callback', 
+    	googlePass.authenticate( 'google', { 
+    		successRedirect: '/',
+    		failureRedirect: '/'
+}));
+
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
