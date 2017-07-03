@@ -2,11 +2,6 @@ var express = require('express');
 var router = express.Router();
 var pg = require('pg');
 
-var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
-
-
-var TOKEN_SECRET = "THIS IS A SECRET";
 
 var client = new pg.Client({
 	user: 'ldbgswgxwuvsjp',
@@ -19,7 +14,7 @@ var client = new pg.Client({
 
 client.connect();
 
-/* GET users listing. */
+/*PUT new user into database */
 router.put('/', function(req, res, next) {
 	console.log("HERE");
 	console.log(req.body);
@@ -30,9 +25,8 @@ router.put('/', function(req, res, next) {
 	// res.send(query);
 });
 
-router.post('/register', function(req,res) {
-	var passDigest = bcrypt.hashSync(req.body.password, 10);
 
+router.post('/', function(req,res) {
 	var q = "INSERT INTO users (firstname, lastname, username, email, password) VALUES ('"+req.body.firstname+"', '"+req.body.lastname+"', '"+req.body.username+"', '"+req.body.email+"', '"+req.body.password+"');";
 	console.log(q);
 	var query = client.query(q, function(error) {
@@ -43,14 +37,14 @@ router.post('/register', function(req,res) {
 			});
 		}
 		else {
-			var userToken = jwt.sign({"username": req.body.username}, TOKEN_SECRET);
 			res.status(201).json({
 				status: 'success',
-				data: userToken,
 				message: 'successfully added new user'
 			});
 		}
 	});
+
 });
+
 
 module.exports = router;

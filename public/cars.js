@@ -1,5 +1,7 @@
 $(document).ready(function(e) {
 
+
+
 	$('.carClick').click(function() {
 		var id = $(this).attr("id"); //get the car id number
 		var imgSrc = $(this).attr("src");
@@ -23,10 +25,13 @@ $(document).ready(function(e) {
 		});
 	});
 
+	
+	var modalHtml; 
+	var butTemp;
 	//create Html for the modal to display car information
 	function appendInfoToModal(car, imgSrc) {
 		console.log("Image: "+imgSrc);
-		var modalHtml = '<div class="modal-dialog" id="carmodal">';
+		modalHtml = '<div class="modal-dialog" id="carmodal">';
 		modalHtml += '<div class="modal-content">';
 		modalHtml += '<div class="modal-header">';
 		modalHtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
@@ -46,12 +51,53 @@ $(document).ready(function(e) {
 		modalHtml += '<h3 align="center">Price: $'+car[0].price+'</h3>';
 		modalHtml += '</div></div></div>';
 		modalHtml += '<div class="modal-footer">';
-		modalHtml += '<button class="btn btn-info btn-block">Buy Now</button>';
+		modalHtml += '<button id="buyNow" class="btn btn-info btn-block">Buy Now</button>';
 		modalHtml += '</div></div></div>';
 
 		$('#carInfo').empty().append(modalHtml);
+		
+		for (var i = document.getElementsByTagName('button').length - 1; i >= 0; i--) {
+			if(document.getElementsByTagName('button')[i].id == "buyNow"){
+				document.getElementsByTagName('button')[i].addEventListener("click",function(e){
+					//this is adding to the cart
+					//alert("pop");
+					//createCookie(car[0].id,car[0].model);
+					$('#carInfo').empty();
+					swal('Thanks For Purchasing!','Enjoy The Ride','success');
+				});
+			}
+		}
 		$('#carInfo').modal();
 	}
+
+	function createCookie(name,value,days) {
+    	var expires = "";
+    	if (days) {
+        	var date = new Date();
+        	date.setTime(date.getTime() + (days*24*60*60*1000));
+        	expires = "; expires=" + date.toUTCString();
+    	}
+    	document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function readCookie(name) {
+    	var nameEQ = name + "=";
+    	var ca = document.cookie.split(';');
+    	for(var i=0;i < ca.length;i++) {
+        	var c = ca[i];
+        	while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        	if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    	}
+    	return null;
+	}
+
+	function eraseCookie(name) {
+    	createCookie(name,"",-1);
+	}
+
+	
+
+
 });
 
 
