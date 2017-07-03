@@ -112,12 +112,12 @@ function saveUser(user) {
 			lastname: user.lastname, 
 			username: user.username, 
 			email: user.email, 
-			token: user.token}
+			token: "PLEASEWORKTHANK"}
 	]).toString();
 
 	//INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.token+"');";
 	console.log(q);
-	var query = client.query(q, function(err) {
+	client.query(q, function(err) {
 		if(err) {
 			console.log("Insert command failed");
 			return false;
