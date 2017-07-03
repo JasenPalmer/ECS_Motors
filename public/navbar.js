@@ -7,8 +7,7 @@ $(document).ready(function(e) {
 	$('#submitLogin').click(function () {
 		var user = $('#user').val();
 		var pass = $('#pass').val();
-		if(user === "" || pass === ""){return;} //do some sort of error message here
-		//alert("Username: "+user+" Password: "+pass);
+		if(user === "" || pass === ""){return;}
 		console.log("Username: "+user+" Password: "+pass);
 		$.ajax({
 	      url: '/users/login',
