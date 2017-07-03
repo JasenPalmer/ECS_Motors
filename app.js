@@ -77,8 +77,26 @@ googlePass.use(new GoogleStrategy( {
 	    		console.log("didnt find a user, creating one");
 	    		console.log("Access token: "+id);
 
-	    		var newUser  = createNewUser(profile, id);
-	    		if(saveUser(newUser)) {
+				function do_a( callback ){
+				  setTimeout( function(){
+				    // simulate a time consuming function
+				    console.log( '`do_a`: this takes longer than `do_b`' );
+				 
+				    // if callback exist execute it
+				    callback && callback();
+				  }, 3000 );
+				}
+				 
+				function do_b(){
+				  console.log( '`do_b`: now we can make sure `do_b` comes out after `do_a`' );
+				}
+				 
+				do_a( function(){
+				  do_b();
+				});
+				
+				createNewUser(profile, id, function(newUser) {
+	    			if(saveUser(newUser)) {
 	    			console.log("HERE");
 	    			var fixed = {
 	    				id: newUser.token,
@@ -92,12 +110,13 @@ googlePass.use(new GoogleStrategy( {
 	    		}
 	    		console.log("IT REALLY SHOULDNT BE HERE");
 	    		return done(null);
+	    		});
 	    	}
 	    });
 	}
 ));
 
-function createNewUser(profile, accessToken) {
+function createNewUser(profile, accessToken, callback) {
 	var firstname = profile.name.givenName;
 	var lastname = profile.name.familyName;
 	var username = profile.displayName;
@@ -112,6 +131,7 @@ function createNewUser(profile, accessToken) {
 		'email': email,
 		'token': token
 	};
+	callback && callback(user);
 	return user;
 }
 
@@ -139,7 +159,6 @@ function saveUser(user) {
 }
 
 function isUser(accessToken) {
-	console.log("IS THIS THE PROBLEM??????");
 	var q = "SELECT * FROM users WHERE token = '"+accessToken+"';";
 	console.log("Query: "+q);
 	var query = client.query(q);//"SELECT * FROM users WHERE token = '"+accessToken+"';");
