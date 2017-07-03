@@ -122,7 +122,7 @@ function isUser(accessToken) {
 	});
 	console.log("results: "+results);
 
-	if(results.length = 0) {
+	if(results = []) {
 		return false;
 	}
 	else {
