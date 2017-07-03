@@ -137,7 +137,8 @@ function saveUser(user) {
 
 function isUser(accessToken) {
 	console.log("IS THIS THE PROBLEM??????");
-	var query = client.query("SELECT * FROM users WHERE token = '"+accessToken+"';");
+	var q = squel.select().from("users").where("token = ?", accessToken).toString();
+	var query = client.query(q);//"SELECT * FROM users WHERE token = '"+accessToken+"';");
 	var results = [];
 	query.on('row',function(row){
 		results.push(row);
