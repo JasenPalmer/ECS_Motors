@@ -164,7 +164,7 @@ app.get('/contact', function(req, res) {
 		title: 'ECS Motors'
 	});
 });
-
+var r;
 app.post('/search', function(req, res){
     console.log("hey")
 
@@ -174,7 +174,7 @@ app.post('/search', function(req, res){
     //var s = squel.select().from("cars").where("cars.tsv @@ to_tsquery('"+search_query+"');").toString();
     console.log(q);
   	var query = client.query(q, function(error,result) {
-
+r = result
   		if(error) {
             console.log(error)
   			res.status(400).json({
@@ -185,12 +185,13 @@ app.post('/search', function(req, res){
   		else {
         	//After all data is returned, close connection and return results
         	query.on('end', function(){
-                console.log(result);
+                console.log(r);
         		//client.end();
         		//res.send(result);
+
                 res.render('search', {
                     title: 'ECS Motors',
-                    data: result
+                    data: r
                 });
         	});
   		}
@@ -200,6 +201,7 @@ app.post('/search', function(req, res){
 app.get('/search',function(req,res){
     res.render('search', {
         title: 'ECS Motors',
+        data: r
     });
 });
 

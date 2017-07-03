@@ -83,10 +83,12 @@ $(document).ready(function(e) {
       dataType: 'json',
       contentType: "application/json; charset=tf-8",
       success: function(result) {
-            console.log(query);
+          console.log(result)
+        window.location = '/search';
         },
         error: function(result) {
-          $.get('/search');
+            console.log(result)
+          window.location = '/search';
         }
     });
 	});

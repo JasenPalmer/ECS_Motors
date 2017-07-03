@@ -139,11 +139,14 @@
 		<!-- List of cars -->
 		<div style="padding-top: 50px;" class="container">
 			<div class="strike" style="padding-bottom: 50px;">
-				<span>
-					<h1>DATA</h1>
-				</span>
 
 			</div>
+            <span>
+                <% for(var i=0; i < data.rows; i++) { %>
+                    <p><%= data.rows[i] %></p>
+                <% } %>
+                <p><%= JSON.stringify(data.rows) %></p>
+            </span>
 
 <!-- 			<div class="row" style="padding-bottom: 30px;">
 				<div class="col-sm-4">
