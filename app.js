@@ -89,8 +89,8 @@ function createNewUser(profile, accessToken) {
 	var firstname = profile.name.givenName;
 	var lastname = profile.name.familyName;
 	var username = profile.displayName;
-	var email = profile.emails[0];
-	var token = profile.id;
+	var email = "email";//profile.emails[0];
+	var token = accessToken;
 
 	var user = {
 		'firstname': firstname,
