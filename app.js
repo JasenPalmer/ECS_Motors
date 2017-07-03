@@ -86,6 +86,7 @@ googlePass.use(new GoogleStrategy( {
 	    				username: newUser.username,
 	    				email: newUser.email
 	    			};
+	    			console.log("New User: "+fixed);
 	    			return done(null, fixed);
 	    		}
 	    		return done(null);
@@ -137,7 +138,8 @@ function saveUser(user) {
 
 function isUser(accessToken) {
 	console.log("IS THIS THE PROBLEM??????");
-	var q = squel.select().from("users").where("token = ?", accessToken).toString();
+	var q = "SELECT * FROM users WHERE token = '"+accessToken+"';";
+	console.log("Query: "+q);
 	var query = client.query(q);//"SELECT * FROM users WHERE token = '"+accessToken+"';");
 	var results = [];
 	query.on('row',function(row){
