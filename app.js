@@ -11,8 +11,8 @@ var bcrypt = require('bcrypt');
 var session = require('express-session');
 var squel = require('squel');
 
-var passport = require('passport');
-var localStrategy = require('passport-local').Strategy;
+//var passport = require('passport');
+//var localStrategy = require('passport-local').Strategy;
 
 
 var port = process.env.PORT || 8080;
@@ -84,92 +84,90 @@ googlePass.deserializeUser(function(token, done) {
 	});
 });
 
+// passport.serializeUser(function(user, done) {
+// 	done(null, user.username);
+// })
+
+// passport.deserializeUser(function(username, done) {
+// 	findByUsername(username, function(err, user) {
+// 		if(err) {
+// 			done(err);
+// 		}
+// 		if(user) {
+// 			done(null, user);
+// 		}
+// 		done(user);
+// 	});
+// })
 
 
-passport.serializeUser(function(user, done) {
-	done(null, user.username);
-})
+// passport.use(new localStrategy(
 
-passport.deserializeUser(function(username, done) {
-	findByUsername(username, function(err, user) {
-		if(err) {
-			done(err);
-		}
-		if(user) {
-			done(null, user);
-		}
-		done(user);
-	});
-})
+// 	function(username, password, done) {
+// 		findByUsername(username, function(err, user) {
+// 			if(err) {
+// 				return done(err);
+// 			}
+// 			if(!user) {
+// 				return done(null, false, {message: 'Incorrect username'});
+// 			}
 
+// 			if(!comparePass(user.password, password)) {
+// 				return done(null, false, {message: 'Incorrect password'});
+// 			}
+// 			return done(null, user);
+// 		});
+// 	}
+// ));
 
-passport.use(new localStrategy(
-
-	function(username, password, done) {
-		findByUsername(username, function(err, user) {
-			if(err) {
-				return done(err);
-			}
-			if(!user) {
-				return done(null, false, {message: 'Incorrect username'});
-			}
-
-			if(!comparePass(user.password, password)) {
-				return done(null, false, {message: 'Incorrect password'});
-			}
-			return done(null, user);
-		});
-	}
-));
-
-function comparePass(pass, pass2) {
-	return true;
-}
+// function comparePass(pass, pass2) {
+// 	return true;
+// }
 
 
-function findByUsername(username, callback) {
-	var q = "SELECT * FROM users WHERE username = '"+username+"';";
-	client.query(q, function(err, results) {
-		if(err) {
-			callback && callback(err, false);
-		}
-		console.log(results.rows);
-		if(results.rows == []) {
-			callback && callback(null, false);
-			return false;
-		}
-		var user = {
-			id: results.rows[0].id,
-			firstname: results.rows[0].firstname,
-			lastname: results.rows[0].lastname,
-			username: results.rows[0].username,
-			email: results.rows[0].email
-		}
-		callback && callback(null, user);
-	});
-}
+// function findByUsername(username, callback) {
+// 	var q = "SELECT * FROM users WHERE username = '"+username+"';";
+// 	client.query(q, function(err, results) {
+// 		if(err) {
+// 			callback && callback(err, false);
+// 		}
+// 		console.log(results.rows);
+// 		if(results.rows == []) {
+// 			callback && callback(null, false);
+// 			return false;
+// 		}
+// 		var user = {
+// 			id: results.rows[0].id,
+// 			firstname: results.rows[0].firstname,
+// 			lastname: results.rows[0].lastname,
+// 			username: results.rows[0].username,
+// 			email: results.rows[0].email
+// 		}
+// 		callback && callback(null, user);
+// 	});
+// }
 
-function findById(id, callback) {
-	var q = "SELECT * FROM users WHERE id = "+id+";";
-	client.query(q, function(err, results) {
-		if(err) {
-			callback && callback(err, false);
-		}
-		if(results.rows == []) {
-			callback && callback(null, false);
-			return false;
-		}
-		var user = {
-			id: results.rows[0].id,
-			firstname: results.rows[0].firstname,
-			lastname: results.rows[0].lastname,
-			username: results.rows[0].username,
-			email: results.rows[0].email
-		}
-		callback && callback(null, user);
-		return user;
-	});
-}
+// function findById(id, callback) {
+// 	var q = "SELECT * FROM users WHERE id = "+id+";";
+// 	client.query(q, function(err, results) {
+// 		if(err) {
+// 			callback && callback(err, false);
+// 		}
+// 		if(results.rows == []) {
+// 			callback && callback(null, false);
+// 			return false;
+// 		}
+// 		var user = {
+// 			id: results.rows[0].id,
+// 			firstname: results.rows[0].firstname,
+// 			lastname: results.rows[0].lastname,
+// 			username: results.rows[0].username,
+// 			email: results.rows[0].email
+// 		}
+// 		callback && callback(null, user);
+// 		return user;
+// 	});
+// }
 
 
 
@@ -319,11 +317,11 @@ app.post('/users/register', function(req,res) {
 });
 
 
-app.post('/users/login', passport.authenticate('local', 
-	{successRedirect: '/',
-	failureRedirect: '/',
-	failureFlash: true}
-));
+// app.post('/users/login', passport.authenticate('local', 
+// 	{successRedirect: '/',
+// 	failureRedirect: '/',
+// 	failureFlash: true}
+// ));
 
 app.get('/auth/google', 
 	googlePass.authenticate('google', 
