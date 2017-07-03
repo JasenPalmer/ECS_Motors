@@ -121,13 +121,15 @@ function saveUser(user) {
 		if(err) {
 			console.log("Insert command failed");
 			return false;
+		}else {
+			console.log("added new user - oauth");
+			return true;
 		}
-		console.log("added new user - oauth");
-		return true;
 	});
 }
 
 function isUser(accessToken) {
+	console.log("IS THIS THE PROBLEM??????");
 	var query = client.query("SELECT * FROM users WHERE token = "+accessToken+";");
 	var results = [];
 	query.on('row',function(row){
