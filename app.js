@@ -47,11 +47,12 @@ app.use(googlePass.initialize());
 app.use(googlePass.session());
 
 googlePass.serializeUser(function(user, done) {
-	console.log(user.token);
+	console.log("serializeUser TOKEN: "+user.token);
 	done(null, user.token);
 });
 
 googlePass.deserializeUser(function(token, done) {
+	console.log("deserializeUser: "+token);
 	var user = isUser(token);
   done(null, user);
 });
