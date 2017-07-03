@@ -105,12 +105,12 @@ function createNewUser(profile, accessToken) {
 }
 
 function saveUser(user) {
-	var q = squel.insert().into("users").setFieldsRows([
-		{firstname: user.firstname},
-		{lastname: user.lastname},
-		{username: user.username},
-		{email: user.email},
-		{token: user.token}
+	var q = squel.insert().into("users").setFieldsRows([{
+			firstname: user.firstname, 
+			lastname: user.lastname, 
+			username: user.username, 
+			email: user.email, 
+			token: user.token}
 	]).toString();
 	//INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.token+"');";
 	console.log(q);
