@@ -400,7 +400,8 @@ r = result
 app.get('/search',function(req,res){
     res.render('search', {
         title: 'ECS Motors',
-        data: r
+        data: r,
+	user: req.user
     });
 });
 
