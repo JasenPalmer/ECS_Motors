@@ -1,6 +1,3 @@
-
-
-
 $(document).ready(function(e) {
 
 	$('#login').click(function() {
@@ -46,7 +43,7 @@ $(document).ready(function(e) {
 		if(firstname === "" || lastname === "" || username === "" || email === 
 			"") {return;}
 		$.ajax({
-			url:'/users',
+			url:'/users/register',
 			method: 'POST',
 			data: JSON.stringify({
 				'firstname': firstname,
@@ -58,6 +55,7 @@ $(document).ready(function(e) {
 			dataType: 'json',
 			contentType: "application/json; charset=tf-8",
 			success: function(result) {
+
 	      		console.log("Successfully added new user");
 		    },
 		    error: function(result) {
