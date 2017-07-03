@@ -70,48 +70,33 @@ googlePass.use(new GoogleStrategy( {
 	    	//return done(null, profile);
 	    	// //var fixAccessToken = accessToken.replace(".", "");
 	    	var id = profile.id;
-	    	var user = isUser(id);
-	    	if(user) {
-	    		return done(null, user);
-	    	}else {
-	    		console.log("didnt find a user, creating one");
-	    		console.log("Access token: "+id);
+	    	isUser(id, function(user) {
+				if(user) {
+		    		return done(null, user);
+		    	}else {
 
-				function do_a( callback ){
-				  setTimeout( function(){
-				    // simulate a time consuming function
-				    console.log( '`do_a`: this takes longer than `do_b`' );
-				 
-				    // if callback exist execute it
-				    callback && callback();
-				  }, 3000 );
-				}
-				 
-				function do_b(){
-				  console.log( '`do_b`: now we can make sure `do_b` comes out after `do_a`' );
-				}
-				 
-				do_a( function(){
-				  do_b();
-				});
-				
-				createNewUser(profile, id, function(newUser) {
-	    			if(saveUser(newUser)) {
-	    			console.log("HERE");
-	    			var fixed = {
-	    				id: newUser.token,
-	    				firstname: newUser.firstname,
-	    				lastname: newUser.lastname,
-	    				username: newUser.username,
-	    				email: newUser.email
-	    			};
-	    			console.log("New User: "+fixed);
-	    			return done(null, fixed);
-	    		}
-	    		console.log("IT REALLY SHOULDNT BE HERE");
-	    		return done(null);
-	    		});
-	    	}
+		    		console.log("didnt find a user, creating one");
+		    		console.log("Access token: "+id);
+					
+					createNewUser(profile, id, function(newUser) {
+		    			if(saveUser(newUser)) {
+		    			console.log("HERE");
+		    			var fixed = {
+		    				id: newUser.token,
+		    				firstname: newUser.firstname,
+		    				lastname: newUser.lastname,
+		    				username: newUser.username,
+		    				email: newUser.email
+		    			};
+		    			console.log("New User: "+fixed);
+		    			return done(null, fixed);
+		    		}
+		    		console.log("IT REALLY SHOULDNT BE HERE");
+		    		return done(null);
+		    		});
+		    	}
+	    	});
+	    	
 	    });
 	}
 ));
@@ -158,7 +143,7 @@ function saveUser(user) {
 	});
 }
 
-function isUser(accessToken) {
+function isUser(accessToken, callback) {
 	var q = "SELECT * FROM users WHERE token = '"+accessToken+"';";
 	console.log("Query: "+q);
 	var query = client.query(q);//"SELECT * FROM users WHERE token = '"+accessToken+"';");
@@ -169,6 +154,7 @@ function isUser(accessToken) {
 	console.log("results: "+results);
 
 	if(results = []) {
+		callback && callback(false);
 		return false;
 	}
 	else {
@@ -181,6 +167,7 @@ function isUser(accessToken) {
 		'email': results[3],
 		'token': results[5]
 		};
+		callback && callback(user);
 		return user;
 	}
 }
