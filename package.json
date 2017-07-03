@@ -20,6 +20,7 @@
     "passport-google-oauth": "^1.0.0",
     "pg": "^6.4.0",
     "pgpass": "^1.0.2",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "squel": "^5.10.0"
   }
 }

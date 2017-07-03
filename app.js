@@ -9,6 +9,7 @@ var googlePass = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var bcrypt = require('bcrypt');
 var session = require('express-session');
+var squel = require('squel');
 
 var port = process.env.PORT || 8080;
 
@@ -104,7 +105,14 @@ function createNewUser(profile, accessToken) {
 }
 
 function saveUser(user) {
-	var q = "INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.token+"');";
+	var q = squel.insert().into("users").setFieldRows([
+		{firstname: user.firstname},
+		{lastname: user.lastname},
+		{username: user.username},
+		{email: user.email},
+		{token: user.token}
+	]).toString();
+	//INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.token+"');";
 	console.log(q);
 	var query = client.query(q, function(err) {
 		if(err) {
