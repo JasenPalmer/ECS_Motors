@@ -5,13 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var pg = require('pg');
-var googlePass = require('passport');
+var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var bcrypt = require('bcrypt');
 var session = require('express-session');
 var squel = require('squel');
-//var passport = require('passport');
-//var localStrategy = require('passport-local').Strategy;
+var localStrategy = require('passport-local').Strategy;
 var port = process.env.PORT || 8080;
 
 var app = express();
@@ -58,117 +57,114 @@ app.use(session({
 	saveUninitialized: true,
 	cookie: {secure: false}
 	}));
-app.use(googlePass.initialize());
-app.use(googlePass.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
-googlePass.serializeUser(function(user, done) {
+passport.serializeUser(function(user, done) {
 	console.log("serializeUser: "+user);
 	done(null, user.id);
 });
 
-googlePass.deserializeUser(function(token, done) {
+passport.deserializeUser(function(token, done) {
 	console.log("deserializeUser: "+token);
-	isUser(token, function(user) {
-		var fixed = {
-				    id: user.token,
-				    firstname: user.firstname,
-				    lastname: user.lastname,
-				    username: user.username,
-				    email: user.email
-				}
-		done(null, fixed);
-	});
+	var tokenVal = parseInt(token);
+	if(tokenVal > 100) {
+		isUser(token, function(user) {
+			var fixed = {
+					    id: user.token,
+					    firstname: user.firstname,
+					    lastname: user.lastname,
+					    username: user.username,
+					    email: user.email
+					}
+			done(null, fixed);
+		});
+	}
+	else {
+		findById(tokenVal, function(err, user) {
+			if(err) {
+				done(err);
+			}
+			if(user) {
+				done(null, user);
+			}
+			done(user);
+		});
+	}
 });
 
-// passport.serializeUser(function(user, done) {
-// 	done(null, user.username);
-// })
+passport.use(new localStrategy({
+		passReqToCallback: true
+	},
+	function(req,username, password, done) {
+		findByUsername(username, function(err, user) {
+			if(err) {
+				return done(err);
+			}
+			if(!user) {
+				return done(null, false, {message: 'Incorrect username'});
+			}
 
-// passport.deserializeUser(function(username, done) {
-// 	findByUsername(username, function(err, user) {
-// 		if(err) {
-// 			done(err);
-// 		}
-// 		if(user) {
-// 			done(null, user);
-// 		}
-// 		done(user);
-// 	});
-// })
+			if(!comparePass(user.password, password)) {
+				return done(null, false, {message: 'Incorrect password'});
+			}
+			return done(null, user);
+		});
+	}
+));
 
-
-// passport.use(new localStrategy(
-
-// 	function(username, password, done) {
-// 		findByUsername(username, function(err, user) {
-// 			if(err) {
-// 				return done(err);
-// 			}
-// 			if(!user) {
-// 				return done(null, false, {message: 'Incorrect username'});
-// 			}
-
-// 			if(!comparePass(user.password, password)) {
-// 				return done(null, false, {message: 'Incorrect password'});
-// 			}
-// 			return done(null, user);
-// 		});
-// 	}
-// ));
-
-// function comparePass(pass, pass2) {
-// 	return true;
-// }
+function comparePass(pass, pass2) {
+	return true;
+}
 
 
-// function findByUsername(username, callback) {
-// 	var q = "SELECT * FROM users WHERE username = '"+username+"';";
-// 	client.query(q, function(err, results) {
-// 		if(err) {
-// 			callback && callback(err, false);
-// 		}
-// 		console.log(results.rows);
-// 		if(results.rows == []) {
-// 			callback && callback(null, false);
-// 			return false;
-// 		}
-// 		var user = {
-// 			id: results.rows[0].id,
-// 			firstname: results.rows[0].firstname,
-// 			lastname: results.rows[0].lastname,
-// 			username: results.rows[0].username,
-// 			email: results.rows[0].email
-// 		}
-// 		callback && callback(null, user);
-// 	});
-// }
+function findByUsername(username, callback) {
+	var q = "SELECT * FROM users WHERE username = '"+username+"';";
+	client.query(q, function(err, results) {
+		if(err) {
+			callback && callback(err, false);
+		}
+		console.log(results.rows);
+		if(results.rows[0] == undefined) {
+			callback && callback(null, false);
+		}
+		var user = {
+			id: results.rows[0].id,
+			firstname: results.rows[0].firstname,
+			lastname: results.rows[0].lastname,
+			username: results.rows[0].username,
+			email: results.rows[0].email
+		}
+		callback && callback(null, user);
+	});
+}
 
-// function findById(id, callback) {
-// 	var q = "SELECT * FROM users WHERE id = "+id+";";
-// 	client.query(q, function(err, results) {
-// 		if(err) {
-// 			callback && callback(err, false);
-// 		}
-// 		if(results.rows == []) {
-// 			callback && callback(null, false);
-// 			return false;
-// 		}
-// 		var user = {
-// 			id: results.rows[0].id,
-// 			firstname: results.rows[0].firstname,
-// 			lastname: results.rows[0].lastname,
-// 			username: results.rows[0].username,
-// 			email: results.rows[0].email
-// 		}
-// 		callback && callback(null, user);
-// 		return user;
-// 	});
-// }
+function findById(id, callback) {
+	var q = "SELECT * FROM users WHERE id = "+id+";";
+	client.query(q, function(err, results) {
+		if(err) {
+			callback && callback(err, false);
+		}
+		if(results.rows == []) {
+			callback && callback(null, false);
+			return false;
+		}
+		var user = {
+			id: results.rows[0].id,
+			firstname: results.rows[0].firstname,
+			lastname: results.rows[0].lastname,
+			username: results.rows[0].username,
+			email: results.rows[0].email
+		}
+		callback && callback(null, user);
+		return user;
+	});
+}
 
 
 
-googlePass.use(new GoogleStrategy( {
+passport.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
 	callbackURL: "https://ecsmotors.herokuapp.com/auth/google/callback",
@@ -313,19 +309,21 @@ app.post('/users/register', function(req,res) {
 	// 	}
 	// });
 });
-// app.post('/users/login', passport.authenticate('local', 
-// 	{successRedirect: '/',
-// 	failureRedirect: '/',
-// 	failureFlash: true}
-// ));
+
+
+app.post('/users/login', passport.authenticate('local', 
+	{successRedirect: '/',
+	failureRedirect: '/',
+	failureFlash: true}
+));
 
 app.get('/auth/google', 
-	googlePass.authenticate('google', 
+	passport.authenticate('google', 
 		{scope:['openid email profile']})
 );
 
 app.get( '/auth/google/callback', 
-    	googlePass.authenticate( 'google', { 
+    	passport.authenticate( 'google', { 
     		successRedirect: '/',
     		failureRedirect: '/login'
 }));
