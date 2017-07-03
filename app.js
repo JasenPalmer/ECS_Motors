@@ -152,7 +152,7 @@ function isUser(accessToken, callback) {
 	console.log("Query: "+q);
 	client.query(q, function(err, result) {
 		console.log("RESULT: ");
-		console.log(result);
+		console.log(result.rows[0]);
 	});
 	var results = [];
 	// query.on('row',function(row){
