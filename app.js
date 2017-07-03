@@ -47,8 +47,8 @@ app.use(googlePass.initialize());
 app.use(googlePass.session());
 
 googlePass.serializeUser(function(user, done) {
-	console.log(user.id);
-	done(null, user.id);
+	console.log(user.token);
+	done(null, user.token);
 });
 
 googlePass.deserializeUser(function(token, done) {
