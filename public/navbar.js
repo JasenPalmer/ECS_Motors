@@ -71,13 +71,20 @@ $(document).ready(function(e) {
 	});
 
 	$('#srch-btn').click(function() {
-
-
-
-
 		var query = $('#srch-trm').val();
 		if(query === ""){return;}
 		alert("Search for "+query);
 		// send query to the database
 	});
+
+	$('#butSub').click(function() {
+		swal('Get Back To You Soon!','Email Sent Successfully','success');
+	});
+
+
+
+
+
+
+
 });

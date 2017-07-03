@@ -7,12 +7,10 @@
 		
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="navbar.js"></script>
-		<!--<script src="bower_components/sweetalert2/dist/sweetalert2.min.js"></script>-->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+		<script src="cars.js"></script>
 
 
 		<title><%= title %></title>
@@ -27,8 +25,8 @@
 				<!-- Navigation tabs -->
 	            <ul class="nav navbar-nav navbar-left">
 	              <li><a href="/cars">Cars</a></li>
-	              <li class="active"><a href="/contact">Contact</a></li>
-	              <li><a href="/cart">Cart</a></li>
+	              <li><a href="/contact">Contact</a></li>
+	              <li class='active'><a href="/search">Cart</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
 	            <!-- Seacrch and login -->
@@ -137,46 +135,59 @@
 			</div>
 		</div>
 
+		<!-- List of cars -->
+		<div style="padding-top: 50px;" class="container">
+			<div class="strike" style="padding-bottom: 50px;">
+				<span><h2>Cart</h2></span>
+			</div>
+
+			<div class="row" style="padding-bottom: 30px;">
+				<div class="col-sm-4">
+					<button type="button" class="btn btn-success btn-block">BUY</button>
+				</div>
+			</div>
+		
+		<!--	<div class="row" style="padding-bottom: 30px;">
+				<div class="col-sm-4">
+
+					<img id="4" class="img-responsive carClick" src="/img/cars-for-sale/mazda.jpg" alt="Mazda" width="400" height="250">
+				</div>
+
+				<div class="col-sm-4">
+					<img id="5" class="img-responsive carClick" src="/img/cars-for-sale/mazda2.jpg" alt="Mazda">
+				</div>
+
+				<div class="col-sm-4">
+					<img id="6" class="img-responsive carClick" src="/img/cars-for-sale/mazda3.jpg" alt="Mazda" width="400" height="250">
+				</div>
+			</div>
+			
+			<div class="row" style="padding-bottom: 30px;">
+				<div class="col-sm-4">
+
+					<img id="7" class="img-responsive carClick" src="/img/cars-for-sale/Rover.jpg" alt="Rover" width="400" height="250">
+				</div>
+
+				<div class="col-sm-4">
+					<img id="8" class="img-responsive carClick" src="/img/cars-for-sale/Rover2.jpg" alt="Rover" width="400" height="250">
+				</div>
+
+				<div class="col-sm-4">
+					<img id="9" class="img-responsive carClick" src="/img/cars-for-sale/Rover3.jpg" alt="Rover" width="400" height="250">
+				</div>
+		 	</div> -->
+		</div>
+		</div>
+
+		<!-- Car info modal -->
+		<div id="carInfo" class="modal fade" role="dialog">
+		</div>
+
+
 		<!-- Footer -->
 		<footer class="footer">
-			<div class="content-switch">
-					<table class = "tab1">
-						<tr>
-							<td><p>Phone Number (04 2355456)</p></td>
-							<td><p>Email Address (ecs.ave.art@ecsmotors.com)</p></td>
-							<td><p>Fax Number(+1-212-9876543)</p></td>
-						</tr>
-					</table>
-					<div class="strike">
-						<span><h2>Fastest way to communicate your needs with us</h2></span>
-					</div>	
-					<form id = "contact-form" action="#">
-    					
-    					<label for="fname">First Name</label>
-   						<input type="text" id="fname" name="firstname" placeholder="Your name..">
-
-     					<label for="lname">Last Name</label>
-    					<input type="text" id="lname" name="lastname" placeholder="Your last name..">
-
-    					<label for="eaddress">Email Address</label>
-    					<input type="email" id="email" name="email" placeholder="Your Email-Address">
-
-    					<label for="pnumber">Phone Number</label>
-    					<input type="text" id="num" name="phone" placeholder="Your Phone Number"> 
-						
-						<!-- 
-    					<label for="country">Country</label>
-    					<select id="country" name="country">
-     					<option value="australia">Australia</option>
-      					<option value="canada">Canada</option>
-      					<option value="usa">USA</option>
-    					</select> -->
-
-    					<label for="subject">Subject</label>
-    					<textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
-						<input id="butSub" type="submit" value="Submit">
-  					</form>						
-			</div> <!--content switch end-->
+			<div class="container">
+			</div>
 		</footer>
 	</body>
 </html>

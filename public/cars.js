@@ -1,5 +1,7 @@
 $(document).ready(function(e) {
 
+
+
 	$('.carClick').click(function() {
 		var id = $(this).attr("id"); //get the car id number
 		var imgSrc = $(this).attr("src");
@@ -58,11 +60,39 @@ $(document).ready(function(e) {
 			if(document.getElementsByTagName('button')[i].id == "buyNow"){
 				document.getElementsByTagName('button')[i].addEventListener("click",function(e){
 					//this is adding to the cart
-					alert("pop");
+					//alert("pop");
+					//createCookie(car[0].id,car[0].model);
+					$('#carInfo').empty();
+					swal('Thanks For Purchasing!','Enjoy The Ride','success');
 				});
 			}
 		}
 		$('#carInfo').modal();
+	}
+
+	function createCookie(name,value,days) {
+    	var expires = "";
+    	if (days) {
+        	var date = new Date();
+        	date.setTime(date.getTime() + (days*24*60*60*1000));
+        	expires = "; expires=" + date.toUTCString();
+    	}
+    	document.cookie = name + "=" + value + expires + "; path=/";
+	}
+
+	function readCookie(name) {
+    	var nameEQ = name + "=";
+    	var ca = document.cookie.split(';');
+    	for(var i=0;i < ca.length;i++) {
+        	var c = ca[i];
+        	while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        	if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    	}
+    	return null;
+	}
+
+	function eraseCookie(name) {
+    	createCookie(name,"",-1);
 	}
 
 	

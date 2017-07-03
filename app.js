@@ -151,6 +151,18 @@ app.get('/cars', function(req, res) {
 	});
 });
 
+app.get('/cart', function(req, res) {
+	res.render('Cart', {
+		title: 'ECS Motors'
+	});
+});
+
+app.get('/search', function(req, res) {
+	res.render('SearchResult', {
+		title: 'ECS Motors'
+	});
+});
+
 app.get('/contact', function(req, res) {
 	res.render('Contact', {
 		title: 'ECS Motors'
