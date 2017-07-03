@@ -170,7 +170,7 @@ app.post('/search', function(req, res){
 
     var search_query = req.body.query.split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } ).join(' | ');
     //WHERE cars.tsv @@ to_tsquery('"+search_query+"')
-  	var q = "SELECT * FROM cars"
+  	var q = "SELECT * FROM cars WHERE cars.tsv @@ to_tsquery('"+search_query+"')"
     //var s = squel.select().from("cars").where("cars.tsv @@ to_tsquery('"+search_query+"');").toString();
     console.log(q);
   	var query = client.query(q, function(error,result) {
@@ -187,13 +187,20 @@ app.post('/search', function(req, res){
         	query.on('end', function(){
                 console.log(result);
         		//client.end();
-        		res.send(result);
-                res.render('SearchResult', {
-                    title: 'ECS Motors'
+        		//res.send(result);
+                res.render('search', {
+                    title: 'ECS Motors',
+                    data: result
                 });
         	});
   		}
   	});
+});
+
+app.get('/search',function(req,res){
+    res.render('search', {
+        title: 'ECS Motors',
+    });
 });
 
 app.get('/cars/:id', function(req, res) {

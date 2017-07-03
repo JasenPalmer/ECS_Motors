@@ -69,10 +69,11 @@ $(document).ready(function(e) {
 		$('#register-suc').modal();
 	});
 
-	$('#srch-btn').click(function() {
+	$('#srch-btn').click(function(event) {
+        event.preventDefault();
 		var query = $('#srch-trm').val();
 		if(query === ""){return;}
-		alert("Search for "+query);
+
     $.ajax({
       url:'/search',
       method: 'POST',
@@ -82,10 +83,10 @@ $(document).ready(function(e) {
       dataType: 'json',
       contentType: "application/json; charset=tf-8",
       success: function(result) {
-            console.log("searching for "+query);
+            console.log(query);
         },
         error: function(result) {
-          console.log("failed to search for "+query);
+          $.get('/search');
         }
     });
 	});
