@@ -66,7 +66,7 @@ googlePass.use(new GoogleStrategy( {
 	    process.nextTick(function () {
 	    	console.log("EMAIL: "+profile.emails[0]);
 	    	//return done(null, profile);
-	    	var user = isUser(accesToken);
+	    	var user = isUser(accessToken);
 	    	if(user) {
 	    		return done(null, user);
 	    	}else {
