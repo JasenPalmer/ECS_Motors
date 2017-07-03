@@ -9,8 +9,9 @@ var googlePass = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var bcrypt = require('bcrypt');
 var session = require('express-session');
-var squel = require('squel')
-
+var squel = require('squel');
+//var passport = require('passport');
+//var localStrategy = require('passport-local').Strategy;
 var port = process.env.PORT || 8080;
 
 var app = express();
@@ -43,51 +44,251 @@ app.use(function (req, res, next) {
  next();
 });
 
+function isLoggedIn (req, res, next) {
+	if(req.user) {
+		console.log("Not logged in");
+		return next();
+	}
+	console.log("logged in");
+	res.redirect('/');
+}
+app.use(session({
+	secret: 'THIS IS THE SECRET',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {secure: false}
+	}));
 app.use(googlePass.initialize());
 app.use(googlePass.session());
-//app.use(session);
 
 
 googlePass.serializeUser(function(user, done) {
-  done(null, user);
+	console.log("serializeUser: "+user);
+	done(null, user.id);
 });
 
-googlePass.deserializeUser(function(obj, done) {
-  done(null, obj);
+googlePass.deserializeUser(function(token, done) {
+	console.log("deserializeUser: "+token);
+	isUser(token, function(user) {
+		var fixed = {
+				    id: user.token,
+				    firstname: user.firstname,
+				    lastname: user.lastname,
+				    username: user.username,
+				    email: user.email
+				}
+		done(null, fixed);
+	});
 });
+
+// passport.serializeUser(function(user, done) {
+// 	done(null, user.username);
+// })
+
+// passport.deserializeUser(function(username, done) {
+// 	findByUsername(username, function(err, user) {
+// 		if(err) {
+// 			done(err);
+// 		}
+// 		if(user) {
+// 			done(null, user);
+// 		}
+// 		done(user);
+// 	});
+// })
+
+
+// passport.use(new localStrategy(
+
+// 	function(username, password, done) {
+// 		findByUsername(username, function(err, user) {
+// 			if(err) {
+// 				return done(err);
+// 			}
+// 			if(!user) {
+// 				return done(null, false, {message: 'Incorrect username'});
+// 			}
+
+// 			if(!comparePass(user.password, password)) {
+// 				return done(null, false, {message: 'Incorrect password'});
+// 			}
+// 			return done(null, user);
+// 		});
+// 	}
+// ));
+
+// function comparePass(pass, pass2) {
+// 	return true;
+// }
+
+
+// function findByUsername(username, callback) {
+// 	var q = "SELECT * FROM users WHERE username = '"+username+"';";
+// 	client.query(q, function(err, results) {
+// 		if(err) {
+// 			callback && callback(err, false);
+// 		}
+// 		console.log(results.rows);
+// 		if(results.rows == []) {
+// 			callback && callback(null, false);
+// 			return false;
+// 		}
+// 		var user = {
+// 			id: results.rows[0].id,
+// 			firstname: results.rows[0].firstname,
+// 			lastname: results.rows[0].lastname,
+// 			username: results.rows[0].username,
+// 			email: results.rows[0].email
+// 		}
+// 		callback && callback(null, user);
+// 	});
+// }
+
+// function findById(id, callback) {
+// 	var q = "SELECT * FROM users WHERE id = "+id+";";
+// 	client.query(q, function(err, results) {
+// 		if(err) {
+// 			callback && callback(err, false);
+// 		}
+// 		if(results.rows == []) {
+// 			callback && callback(null, false);
+// 			return false;
+// 		}
+// 		var user = {
+// 			id: results.rows[0].id,
+// 			firstname: results.rows[0].firstname,
+// 			lastname: results.rows[0].lastname,
+// 			username: results.rows[0].username,
+// 			email: results.rows[0].email
+// 		}
+// 		callback && callback(null, user);
+// 		return user;
+// 	});
+// }
+
 
 
 googlePass.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
 	callbackURL: "https://ecsmotors.herokuapp.com/auth/google/callback",
-	//passReqToCallback: true
+	//callbackURL: "http://localhost:8080/auth/google/callback",
+	passReqToCallback: true
 	},
 	function(request, accessToken, refreshToken, profile, done) {
 	    process.nextTick(function () {
-	    	console.log(profile);
-	    	return done(null, profile);
-    	});
-  	}
+	    	isUser(profile.id, function(user) {
+				if(user) {
+					var fixed = {
+			    				id: user.token,
+			    				firstname: user.firstname,
+			    				lastname: user.lastname,
+			    				username: user.username,
+			    				email: user.email
+			    				}
+		    		return done(null, fixed);
+		    	}else {					
+					createNewUser(profile, id, function(newUser) {
+		    			saveUser(newUser, function(saved) {
+		    				if(saved) {
+		    					console.log("HERE");
+			    				var fixed = {
+			    				id: newUser.token,
+			    				firstname: newUser.firstname,
+			    				lastname: newUser.lastname,
+			    				username: newUser.username,
+			    				email: newUser.email
+			    				}
+			    			console.log("New User: "+fixed);
+			    			return done(null, fixed);
+		    				}
+		    				console.log("IT REALLY SHOULDNT BE HERE");
+		    				return done(null);
+		    			}); 
+		    		});
+		    	}
+	    	});
+	    	
+	    });
+	}
 ));
 
+//create a new user  from the google information
+function createNewUser(profile, accessToken, callback) {
+	var firstname = profile.name.givenName;
+	var lastname = profile.name.familyName;
+	var username = profile.displayName;
+	var email = profile.emails[0];
+	//console.log(accessToken);
+	var token = accessToken;
 
-app.put('/users', function(req, res, next) {
-	console.log("HERE");
-	console.log(req.body);
-	console.log(req.body.username);
-	console.log(req.body.password);
-	// var query = "SELECT * FROM users WHERE username='"+req.data.username+"' AND password='"+req.data.password+"';";
-	// console.log(query);
-	// res.send(query);
-});
+	var user = {
+		'firstname': firstname,
+		'lastname': lastname,
+		'username': username,
+		'email': email,
+		'token': token
+	};
+	callback && callback(user);
+	return user;
+}
+
+// save a user into database
+function saveUser(user, callback) {
+	var q = squel.insert().into("users").setFieldsRows([{
+			firstname: user.firstname, 
+			lastname: user.lastname, 
+			username: user.username, 
+			email: user.email,
+			token: user.token
+		}
+	]).toString();
+	client.query(q, function(err) {
+		if(err) {
+			callback && callback(false);
+			return false;
+		}else {
+			callback && callback(true);
+			return true;
+		}
+	});
+}
+
+function isUser(accessToken, callback) {
+	var q = "SELECT * FROM users WHERE token = '"+accessToken+"';";
+	var results = [];
+	client.query(q, function(err, result) {
+		if(result.rows == []) {
+			callback && callback(false);
+			return false;
+		}
+
+		var firstname = result.rows[0].firstname;
+		var lastname = result.rows[0].lastname;
+		var username = result.rows[0].username;
+		var email = result.rows[0].email;
+		var token = result.rows[0].token;
+
+		var user = {
+		'firstname': firstname,
+		'lastname': lastname,
+		'username': username,
+		'email': email,
+		'token': token
+		};
+
+		callback && callback(user);
+		return user;
+	});
+}
 
 app.post('/users/register', function(req,res) {
 	var passDigest = bcrypt.hashSync(req.body.password, 10);
 
-	var q = "INSERT INTO users (firstname, lastname, username, email, password) VALUES ('"+req.body.firstname+"', '"+req.body.lastname+"', '"+req.body.username+"', '"+req.body.email+"', '"+req.body.password+"');";
+	var q = "INSERT INTO users (firstname, lastname, username, email, password) VALUES ('"+req.body.firstname+"', '"+req.body.lastname+"', '"+req.body.username+"', '"+req.body.email+"', '"+passDigest+"');";
 	console.log(q);
-	var query = client.query(q, function(error) {
+	client.query(q, function(error, results) {
+		console.log(results.rows);
 		if(error) {
 			res.status(400).json({
 				status: 'failed',
@@ -95,44 +296,39 @@ app.post('/users/register', function(req,res) {
 			});
 		}
 		else {
-			var userToken = jwt.sign({"username": req.body.username}, TOKEN_SECRET);
 			res.status(201).json({
 				status: 'success',
-				data: userToken,
 				message: 'successfully added new user'
 			});
 		}
 	});
+	// var user = {
+	// 	username: req.body.username
+	// }
+	// req.login(user, function(err) {
+	// 	if(err) {
+	// 		res.redirect('/fail');
+	// 	}else {
+	// 		res.redirect('/');
+	// 	}
+	// });
 });
+// app.post('/users/login', passport.authenticate('local', 
+// 	{successRedirect: '/',
+// 	failureRedirect: '/',
+// 	failureFlash: true}
+// ));
 
-
-app.get('/auth/google',
-	googlePass.authenticate('google',
+app.get('/auth/google', 
+	googlePass.authenticate('google', 
 		{scope:['openid email profile']})
 );
 
-app.get( '/auth/google/callback',
-    	googlePass.authenticate( 'google', {
-    		successRedirect: '/success',
-    		failureRedirect: '/failed'
+app.get( '/auth/google/callback', 
+    	googlePass.authenticate( 'google', { 
+    		successRedirect: '/',
+    		failureRedirect: '/login'
 }));
-
-app.use(function isLoggedIn(req, res, next) {
-  res.locals.login = req.isAuthenticated();
-    console.log('status of log is ' +   res.locals.login);
-    // if (req.isAuthenticated())
-    return next();
-});
-
-//app.use(isLoggedIn());
-
-// var session = expressSession({
-//     secret: '60dd06aa-cf8e-4cf8-8925-6de720015ebf',
-//     resave: false,
-//     saveUninitialized: false,
-//     name: 'sid'
-// });
-
 
 app.get('/logout', function(req, res){
   req.logout();
@@ -141,8 +337,9 @@ app.get('/logout', function(req, res){
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
-  res.render('index', {
-  	title: 'ECS Motors'
+  res.render('index', { 
+  	title: 'ECS Motors',
+  	user: req.user
    });
 });
 
@@ -155,13 +352,15 @@ app.get('/cart', function(req, res) {
 
 app.get('/cars', function(req, res) {
 	res.render('Cars', {
-		title: 'ECS Motors'
+		title: 'ECS Motors',
+		user: req.user
 	});
 });
 
 app.get('/contact', function(req, res) {
 	res.render('Contact', {
-		title: 'ECS Motors'
+		title: 'ECS Motors',
+		user: req.user
 	});
 });
 var r;
@@ -222,6 +421,14 @@ app.get('/cars/:id', function(req, res) {
 	});
 });
 
+app.get('/authorisedPage', isLoggedIn, function(req, res, next) {
+	console.log("REQ.USER: ");
+	console.log(req.user);
+	res.render('authorisedPage', {
+		title: 'ECS Motors',
+		user: req.user
+	});
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -244,6 +451,5 @@ app.use(function(err, req, res, next) {
 app.listen(port,function() {
 	console.log('TO-DO List app listening on port '+port+'!');
 });
-
 
 module.exports = app;

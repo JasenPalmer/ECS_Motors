@@ -4,21 +4,17 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width = device-width, initial-scale = 1">
-
+		
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="navbar.js"></script>
-		<script src="cars.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-
 
 		<title><%= title %></title>
 	</head>
 	<body>
-		<!-- Navigation bar -->
+	<!-- Navigation bar -->
 		<div class="navbar navbar-inverse" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
@@ -26,9 +22,8 @@
 				</div>
 				<!-- Navigation tabs -->
 	            <ul class="nav navbar-nav navbar-left">
-	              <li class='active'><a href="/cars">Cars</a></li>
+	              <li ><a href="/cars">Cars</a></li>
 	              <li><a href="/contact">Contact</a></li>
-	              <li><a href="/cart">Cart</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
 	            <!-- Seacrch and login -->
@@ -37,16 +32,64 @@
 	            		<div class="input-group search-box">
 	            			<input class="form-control" placeholder="Search" type="text" name="srch-term" id="srch-trm">
 	            			<div class="input-group-btn">
-	            				<button id="srch-btn" class="btn btn-default">
+	            				<button id="srch-btn" class="btn btn-default" type="submit">
 	            					<i class="glyphicon glyphicon-search"></i>
 	            				</button>
 	            			</div>
 	            	</form>
-	            <li><a id="login" href="#"><%= user ? user.username : "Login/Register"; %></a></li>
+	            <li><a id="login" href="#">Login/Register</a></li>
 	            </ul>
 			</div>
 		</div>
 
+		<!-- Carousel -->
+		<div class="container">
+			<div id="carCarousel" class="carousel slide" data-ride="carousel">
+				<ol class="carousel-indicators">
+					<li data-target="#carCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#carCarousel" data-slide-to="1"></li>
+					<li data-target="#carCarousel" data-slide-to="2"></li>
+					<li data-target="#carCarousel" data-slide-to="3"></li>
+					<li data-target="#carCarousel" data-slide-to="4"></li>
+					<li data-target="#carCarousel" data-slide-to="5"></li>
+					<li data-target="#carCarousel" data-slide-to="6"></li>
+				</ol>
+				<!-- Carousel item 1 -->
+				<div class="carousel-inner">
+					<div class="item active">
+						<div class="slide1"></div>
+					</div>
+					<!-- Carousel item 2 -->
+					<div class="item">
+						<div class="slide2"></div>
+					</div>
+					<!-- Carousel item 3 -->
+					<div class="item">
+						<div class="slide3"></div>
+					</div>
+					<!-- Carousel item 4 -->
+					<div class="item">
+						<div class="slide4"></div>
+					</div>
+					<!-- Carousel item 5 -->
+					<div class="item">
+						<div class="slide5"></div>
+					</div>
+					<!-- Carousel item 6 -->
+					<div class="item">
+						<div class="slide6"></div>
+					</div>
+					<!-- More items can be add here but also need to update css file (style.css) -->
+				</div>
+				<a class="left carousel-control" href="#carCarousel" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left"> </span>
+				</a>
+				<a class="right carousel-control" href="#carCarousel" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right"></span>
+				</a>
+			</div>
+		</div>
+		
 		<!-- Login modal -->
 		<div id="loginReq" class="modal fade" role="dialog">
 			<div class="modal-dialog">
@@ -76,7 +119,7 @@
 			        		<span>or</span>
 			        	</div>
 			        	<div id="google-login">
-			        		<button type="button" class="btn btn-link "><img src="/img/google-icon-small.png"></button>
+			        		<a href="/auth/google"><img src="/img/google-icon-small.png"></a>
 			        	</div>
 					</div>
 			    </div>
@@ -120,7 +163,7 @@
 			    </div>
 			</div>
 		</div>
-		<!-- Resister Successful -->
+
 		<div id="register-suc" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 			    <div class="modal-content">
@@ -136,67 +179,5 @@
 			    </div>
 			</div>
 		</div>
-
-		<!-- Latest Listings -->
-		<div style="padding-top: 50px;" class="container">
-			<div class="strike" style="padding-bottom: 50px;">
-				<span><h2>Cars For Sale</h2></span>
-			</div>
-			<div class="row" style="padding-bottom: 30px;">
-				<div class="col-sm-4">
-
-					<img id='1' class="img-responsive carClick" src="/img/cars-for-sale/Ford.jpg" alt="Ford" width="400" height="250">
-				</div>
-
-				<div class="col-sm-4">
-					<img id='2' class="img-responsive carClick" src="/img/cars-for-sale/Ford2.jpg" alt="Ford" width="400" height="250">
-				</div>
-
-				<div class="col-sm-4">
-					<img id='3' class="img-responsive carClick" src="/img/cars-for-sale/Ford3.jpeg" alt="Ford" width="400" height="250">
-				</div>
-			</div>
-
-		<div class="row" style="padding-bottom: 30px;">
-				<div class="col-sm-4">
-
-					<img id="4" class="img-responsive carClick" src="/img/cars-for-sale/mazda.jpg" alt="Mazda" width="400" height="250">
-				</div>
-
-				<div class="col-sm-4">
-					<img id="5" class="img-responsive carClick" src="/img/cars-for-sale/mazda2.jpg" alt="Mazda">
-				</div>
-
-				<div class="col-sm-4">
-					<img id="6" class="img-responsive carClick" src="/img/cars-for-sale/mazda3.jpg" alt="Mazda" width="400" height="250">
-				</div>
-			</div>
-		<div class="row" style="padding-bottom: 30px;">
-				<div class="col-sm-4">
-
-					<img id="7" class="img-responsive carClick" src="/img/cars-for-sale/Rover.jpg" alt="Rover" width="400" height="250">
-				</div>
-
-				<div class="col-sm-4">
-					<img id="8" class="img-responsive carClick" src="/img/cars-for-sale/Rover2.jpg" alt="Rover" width="400" height="250">
-				</div>
-
-				<div class="col-sm-4">
-					<img id="9" class="img-responsive carClick" src="/img/cars-for-sale/Rover3.jpg" alt="Rover" width="400" height="250">
-				</div>
-			</div>
-		</div>
-		</div>
-
-		<!-- Car info modal -->
-		<div id="carInfo" class="modal fade" role="dialog">
-		</div>
-
-
-		<!-- Footer -->
-		<footer class="footer">
-			<div class="container">
-			</div>
-		</footer>
 	</body>
 </html>
