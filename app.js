@@ -71,7 +71,7 @@ googlePass.use(new GoogleStrategy( {
 	    		return done(null, user);
 	    	}else {
 	    		console.log("didnt find a user, creating one");
-	    		console.log(accessToken);
+	    		console.log("Access token: "+accessToken);
 	    		var newUser  = createNewUser(profile, accessToken);
 	    		if(!newUser) {
 	    			return done(null);
@@ -90,7 +90,7 @@ function createNewUser(profile, accessToken) {
 	var lastname = profile.name.familyName;
 	var username = profile.displayName;
 	var email = profile.emails[0];
-	var token = accessToken;
+	var token = profile.id;
 
 	var user = {
 		'firstname': firstname,
