@@ -109,7 +109,7 @@ function saveUser(user) {
 			lastname: user.lastname, 
 			username: user.username, 
 			email: user.email, 
-			token: "PLEASEWORKTHANK"}
+			token: user.token}
 	]).toString();
 
 	//INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.token+"');";
