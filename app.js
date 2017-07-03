@@ -67,22 +67,22 @@ googlePass.use(new GoogleStrategy( {
 	function(request, accessToken, refreshToken, profile, done) {
 	    process.nextTick(function () {
 	    	console.log("EMAIL: "+profile.emails[0]);
-	    	//return done(null, profile);
-	    	//var fixAccessToken = accessToken.replace(".", "");
-	    	var id = profile.id;
-	    	var user = isUser(id);
-	    	if(user) {
-	    		return done(null, user);
-	    	}else {
-	    		console.log("didnt find a user, creating one");
-	    		console.log("Access token: "+id);
+	    	return done(null, profile);
+	    	// //var fixAccessToken = accessToken.replace(".", "");
+	    	// var id = profile.id;
+	    	// var user = isUser(id);
+	    	// if(user) {
+	    	// 	return done(null, user);
+	    	// }else {
+	    	// 	console.log("didnt find a user, creating one");
+	    	// 	console.log("Access token: "+id);
 
-	    		var newUser  = createNewUser(profile, id);
-	    		if(saveUser(newUser)) {
-	    			return done(null, newUser);
-	    		}
-	    		return done(null);
-	    	}
+	    	// 	var newUser  = createNewUser(profile, id);
+	    	// 	if(saveUser(newUser)) {
+	    	// 		return done(null, newUser);
+	    	// 	}
+	    	// 	return done(null);
+	    	// }
 	    });
 	}
 ));
