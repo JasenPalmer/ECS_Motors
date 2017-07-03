@@ -44,14 +44,14 @@ app.use(function (req, res, next) {
 
 app.use(googlePass.initialize());
 app.use(googlePass.session());
-//app.use(session);
-
 
 googlePass.serializeUser(function(user, done) {
-  done(null, user);
+	console.log(user.id);
+	done(null, user.id);
 });
 
 googlePass.deserializeUser(function(obj, done) {
+	
   done(null, obj);
 });
 
