@@ -9,6 +9,7 @@ var googlePass = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var bcrypt = require('bcrypt');
 var session = require('express-session');
+var squel = require('squel')
 
 var port = process.env.PORT || 8080;
 
@@ -105,13 +106,13 @@ app.post('/users/register', function(req,res) {
 });
 
 
-app.get('/auth/google', 
-	googlePass.authenticate('google', 
+app.get('/auth/google',
+	googlePass.authenticate('google',
 		{scope:['openid email profile']})
 );
 
-app.get( '/auth/google/callback', 
-    	googlePass.authenticate( 'google', { 
+app.get( '/auth/google/callback',
+    	googlePass.authenticate( 'google', {
     		successRedirect: '/success',
     		failureRedirect: '/failed'
 }));
@@ -140,15 +141,9 @@ app.get('/logout', function(req, res){
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
-  res.render('index', { 
+  res.render('index', {
   	title: 'ECS Motors'
    });
-});
-
-app.get('/cars', function(req, res) {
-	res.render('Cars', {
-		title: 'ECS Motors'
-	});
 });
 
 app.get('/cart', function(req, res) {
@@ -157,8 +152,9 @@ app.get('/cart', function(req, res) {
 	});
 });
 
-app.get('/search', function(req, res) {
-	res.render('SearchResult', {
+
+app.get('/cars', function(req, res) {
+	res.render('Cars', {
 		title: 'ECS Motors'
 	});
 });
@@ -167,6 +163,44 @@ app.get('/contact', function(req, res) {
 	res.render('Contact', {
 		title: 'ECS Motors'
 	});
+});
+
+app.post('/search', function(req, res){
+    console.log("hey")
+
+    var search_query = req.body.query.split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } ).join(' | ');
+    //WHERE cars.tsv @@ to_tsquery('"+search_query+"')
+  	var q = "SELECT * FROM cars WHERE cars.tsv @@ to_tsquery('"+search_query+"')"
+    //var s = squel.select().from("cars").where("cars.tsv @@ to_tsquery('"+search_query+"');").toString();
+    console.log(q);
+  	var query = client.query(q, function(error,result) {
+
+  		if(error) {
+            console.log(error)
+  			res.status(400).json({
+  				status: 'failed',
+  				message: 'failed to search'
+  			});
+  		}
+  		else {
+        	//After all data is returned, close connection and return results
+        	query.on('end', function(){
+                console.log(result);
+        		//client.end();
+        		//res.send(result);
+                res.render('search', {
+                    title: 'ECS Motors',
+                    data: result
+                });
+        	});
+  		}
+  	});
+});
+
+app.get('/search',function(req,res){
+    res.render('search', {
+        title: 'ECS Motors',
+    });
 });
 
 app.get('/cars/:id', function(req, res) {
@@ -185,8 +219,6 @@ app.get('/cars/:id', function(req, res) {
 		res.send(results);
 	});
 });
-
-
 
 
 // catch 404 and forward to error handler
