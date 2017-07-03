@@ -23,10 +23,13 @@ $(document).ready(function(e) {
 		});
 	});
 
+	
+	var modalHtml; 
+	var butTemp;
 	//create Html for the modal to display car information
 	function appendInfoToModal(car, imgSrc) {
 		console.log("Image: "+imgSrc);
-		var modalHtml = '<div class="modal-dialog" id="carmodal">';
+		modalHtml = '<div class="modal-dialog" id="carmodal">';
 		modalHtml += '<div class="modal-content">';
 		modalHtml += '<div class="modal-header">';
 		modalHtml += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
@@ -46,12 +49,25 @@ $(document).ready(function(e) {
 		modalHtml += '<h3 align="center">Price: $'+car[0].price+'</h3>';
 		modalHtml += '</div></div></div>';
 		modalHtml += '<div class="modal-footer">';
-		modalHtml += '<button class="btn btn-info btn-block">Buy Now</button>';
+		modalHtml += '<button id="buyNow" class="btn btn-info btn-block">Buy Now</button>';
 		modalHtml += '</div></div></div>';
 
 		$('#carInfo').empty().append(modalHtml);
+		
+		for (var i = document.getElementsByTagName('button').length - 1; i >= 0; i--) {
+			if(document.getElementsByTagName('button')[i].id == "buyNow"){
+				document.getElementsByTagName('button')[i].addEventListener("click",function(e){
+					//this is adding to the cart
+					alert("pop");
+				});
+			}
+		}
 		$('#carInfo').modal();
 	}
+
+	
+
+
 });
 
 

@@ -71,6 +71,10 @@ $(document).ready(function(e) {
 	});
 
 	$('#srch-btn').click(function() {
+
+
+
+
 		var query = $('#srch-trm').val();
 		if(query === ""){return;}
 		alert("Search for "+query);
