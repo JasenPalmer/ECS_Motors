@@ -112,8 +112,8 @@ app.get('/auth/google',
 
 app.get( '/auth/google/callback', 
     	googlePass.authenticate( 'google', { 
-    		successRedirect: '/',
-    		failureRedirect: '/'
+    		successRedirect: '/success',
+    		failureRedirect: '/failed'
 }));
 
 app.get('/logout', function(req, res){
