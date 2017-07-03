@@ -105,7 +105,7 @@ function createNewUser(profile, accessToken) {
 }
 
 function saveUser(user) {
-	var q = squel.insert().into("users").setFieldRows([
+	var q = squel.insert().into("users").setFieldsRows([
 		{firstname: user.firstname},
 		{lastname: user.lastname},
 		{username: user.username},
