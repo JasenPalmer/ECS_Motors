@@ -11,8 +11,8 @@ $(document).ready(function(e) {
 		//alert("Username: "+user+" Password: "+pass);
 		console.log("Username: "+user+" Password: "+pass);
 		$.ajax({
-	      url: '/users',
-	      method: 'PUT',
+	      url: '/users/login',
+	      method: 'POST',
 	      data: JSON.stringify({
 	      	username: user, 
 	      	password: pass
