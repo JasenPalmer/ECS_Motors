@@ -46,13 +46,13 @@ app.use(googlePass.initialize());
 app.use(googlePass.session());
 
 googlePass.serializeUser(function(user, done) {
-	console.log(user.id);
-	done(null, user.id);
+	console.log(user.token);
+	done(null, user.token);
 });
 
-googlePass.deserializeUser(function(obj, done) {
-
-  done(null, obj);
+googlePass.deserializeUser(function(token, done) {
+	var user = isUser(token);
+  done(null, user);
 });
 
 
@@ -64,40 +64,57 @@ googlePass.use(new GoogleStrategy( {
 	},
 	function(request, accessToken, refreshToken, profile, done) {
 	    process.nextTick(function () {
-	    	console.log("EMAIL: "+profile.emails);
-	    	return done(null, profile);
-	    	// var user = isUser(profile, accesToken);
-	    	// if(user) {
-	    	// 	return done(null, user);
-	    	// }else {
-	    	// 	console.log("didnt find a user, creating one");
-	    	// 	var newUser = newUser(profile, accessToken);
-	    	// 	if(!newUser) {
-	    	// 		return done(null);
-	    	// 	}
-	    	// 	return done(null, newUser);
-	    	// }
+	    	console.log("EMAIL: "+profile.emails[0]);
+	    	//return done(null, profile);
+	    	var user = isUser(accesToken);
+	    	if(user) {
+	    		return done(null, user);
+	    	}else {
+	    		console.log("didnt find a user, creating one");
+	    		var newUser = newUser(profile, accessToken);
+	    		if(!newUser) {
+	    			return done(null);
+	    		}
+	    		if(saveUser(newUser)) {
+	    			return done(null, newUser);
+	    		}
+	    		return done(null);
+	    	}
 	    });
 	}
 ));
 
-function newUser(profile, accessToken) {''
+function newUser(profile, accessToken) {
 	var firstname = profile.name.givenName;
 	var lastname = profile.name.familyName;
-	//var email = profile.emails
-	
-	var q = "INSERT INTO user (firstname, token) VALUES ('thisisaname', '"+accessToken+"');";
-	//var q = "INSERT INTO todo (item, completed) VALUES ('"+req.body.item+"', "+req.body.completed+");";
+	var username = profile.displayName;
+	var email = profile.emails[0];
+	var token = accessToken;
+
+	var user = {
+		'firstname': firstname,
+		'lastname': lastname,
+		'username': username,
+		'email': email,
+		'token': token
+	};
+	return user;
+}
+
+function saveUser(user) {
+	var q = "INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.accessToken+"');";
 	console.log(q);
 	var query = client.query(q, function(err) {
 		if(err) {
+			console.log("Insert command failed");
 			return false;
 		}
+		console.log("added new user - oauth");
 		return true;
 	});
 }
 
-function isUser(profile, accessToken) {
+function isUser(accessToken) {
 	var query = client.query("SELECT * FROM users WHERE token = "+accessToken+";");
 	var results = [];
 	query.on('row',function(row){
@@ -108,7 +125,15 @@ function isUser(profile, accessToken) {
 	}
 	else {
 		console.log("Found a user");
-		return results[0];
+		console.log("user: "+results[0]);
+		var user = {
+		'firstname': results[0],
+		'lastname': results[1],
+		'username': results[2],
+		'email': results[3],
+		'token': results[5]
+		};
+		return user;
 	}
 }
 
@@ -154,16 +179,16 @@ app.get('/auth/google',
 
 app.get( '/auth/google/callback', 
     	googlePass.authenticate( 'google', { 
-    		successRedirect: '/success',
-    		failureRedirect: '/failed'
+    		successRedirect: '/',
+    		failureRedirect: '/login'
 }));
 
-app.use(function isLoggedIn(req, res, next) {
-  res.locals.login = req.isAuthenticated();
-    console.log('status of log is ' +   res.locals.login);
-    // if (req.isAuthenticated())
-    return next();
-});
+// app.use(function isLoggedIn(req, res, next) {
+//   res.locals.login = req.isAuthenticated();
+//     console.log('status of log is ' +   res.locals.login);
+//     // if (req.isAuthenticated())
+//     return next();
+// });
 
 //app.use(isLoggedIn());
 
