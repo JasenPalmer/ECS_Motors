@@ -120,6 +120,8 @@ function isUser(accessToken) {
 	query.on('row',function(row){
 		results.push(row);
 	});
+	console.log("results: "+results);
+
 	if(results.length = 0) {
 		return false;
 	}
