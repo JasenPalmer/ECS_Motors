@@ -79,21 +79,23 @@ googlePass.use(new GoogleStrategy( {
 		    		console.log("Access token: "+id);
 					
 					createNewUser(profile, id, function(newUser) {
-		    			if(saveUser(newUser)) {
-			    			console.log("HERE");
-			    			var fixed = {
+		    			saveUser(newUser, function(saved) {
+		    				if(saved) {
+		    					console.log("HERE");
+			    				var fixed = {
 			    				id: newUser.token,
 			    				firstname: newUser.firstname,
 			    				lastname: newUser.lastname,
 			    				username: newUser.username,
 			    				email: newUser.email
-			    			};
+			    				}
 			    			console.log("New User: "+fixed);
 			    			return done(null, fixed);
-		    			}
+		    				}
+		    				console.log("IT REALLY SHOULDNT BE HERE");
+		    				return done(null);
+		    			}); 
 		    		});
-		    		console.log("IT REALLY SHOULDNT BE HERE");
-		    		return done(null);
 		    	}
 	    	});
 	    	
@@ -120,7 +122,7 @@ function createNewUser(profile, accessToken, callback) {
 	return user;
 }
 
-function saveUser(user) {
+function saveUser(user, callback) {
 	var q = squel.insert().into("users").setFieldsRows([{
 			firstname: user.firstname, 
 			lastname: user.lastname, 
@@ -135,9 +137,11 @@ function saveUser(user) {
 	client.query(q, function(err) {
 		if(err) {
 			console.log("Insert command failed");
+			callback && callback(false);
 			return false;
 		}else {
 			console.log("added new user - oauth");
+			callback && callback(true);
 			return true;
 		}
 	});
