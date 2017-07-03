@@ -151,7 +151,8 @@ function isUser(accessToken, callback) {
 	var q = "SELECT * FROM users WHERE token = '"+accessToken+"';";
 	console.log("Query: "+q);
 	client.query(q, function(err, result) {
-		console.log("RESULT: "+result);
+		console.log("RESULT: ");
+		console.log(result);
 	});
 	var results = [];
 	// query.on('row',function(row){
@@ -248,7 +249,8 @@ app.get('/logout', function(req, res){
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
-	console.log("REQ.USER: "+req);
+	console.log("REQ.USER: ");
+	console.log(req);
   res.render('index', { 
   	title: 'ECS Motors',
   	user: req.user
