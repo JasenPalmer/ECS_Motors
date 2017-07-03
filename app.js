@@ -150,12 +150,14 @@ function saveUser(user, callback) {
 function isUser(accessToken, callback) {
 	var q = "SELECT * FROM users WHERE token = '"+accessToken+"';";
 	console.log("Query: "+q);
-	var query = client.query(q);//"SELECT * FROM users WHERE token = '"+accessToken+"';");
-	var results = [];
-	query.on('row',function(row){
-		results.push(row);
+	client.query(q, function(err, result) {
+		console.log("RESULT: "+result);
 	});
-	console.log("results: "+results);
+	var results = [];
+	// query.on('row',function(row){
+	// 	results.push(row);
+	// });
+	// console.log("results: "+results);
 
 	if(results = []) {
 		callback && callback(false);
@@ -246,7 +248,7 @@ app.get('/logout', function(req, res){
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
-	console.log("REQ.USER: "+req.user);
+	console.log("REQ.USER: "+req);
   res.render('index', { 
   	title: 'ECS Motors',
   	user: req.user
