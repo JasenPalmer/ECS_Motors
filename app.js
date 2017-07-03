@@ -90,6 +90,7 @@ function createNewUser(profile, accessToken) {
 	var lastname = profile.name.familyName;
 	var username = profile.displayName;
 	var email = "email";//profile.emails[0];
+	console.log(accessToken);
 	var token = accessToken;
 
 	var user = {
@@ -103,7 +104,7 @@ function createNewUser(profile, accessToken) {
 }
 
 function saveUser(user) {
-	var q = "INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.accessToken+"');";
+	var q = "INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.token+"');";
 	console.log(q);
 	var query = client.query(q, function(err) {
 		if(err) {
