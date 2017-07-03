@@ -80,20 +80,20 @@ googlePass.use(new GoogleStrategy( {
 					
 					createNewUser(profile, id, function(newUser) {
 		    			if(saveUser(newUser)) {
-		    			console.log("HERE");
-		    			var fixed = {
-		    				id: newUser.token,
-		    				firstname: newUser.firstname,
-		    				lastname: newUser.lastname,
-		    				username: newUser.username,
-		    				email: newUser.email
-		    			};
-		    			console.log("New User: "+fixed);
-		    			return done(null, fixed);
-		    		}
+			    			console.log("HERE");
+			    			var fixed = {
+			    				id: newUser.token,
+			    				firstname: newUser.firstname,
+			    				lastname: newUser.lastname,
+			    				username: newUser.username,
+			    				email: newUser.email
+			    			};
+			    			console.log("New User: "+fixed);
+			    			return done(null, fixed);
+		    			}
+		    		});
 		    		console.log("IT REALLY SHOULDNT BE HERE");
 		    		return done(null);
-		    		});
 		    	}
 	    	});
 	    	
