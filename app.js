@@ -10,7 +10,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var bcrypt = require('bcrypt');
 var session = require('express-session');
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 8080;
 
 var app = express();
 
@@ -115,6 +115,23 @@ app.get( '/auth/google/callback',
     		successRedirect: '/success',
     		failureRedirect: '/failed'
 }));
+
+app.use(function isLoggedIn(req, res, next) {
+  res.locals.login = req.isAuthenticated();
+    console.log('status of log is ' +   res.locals.login);
+    // if (req.isAuthenticated())
+    return next();
+});
+
+//app.use(isLoggedIn());
+
+// var session = expressSession({
+//     secret: '60dd06aa-cf8e-4cf8-8925-6de720015ebf',
+//     resave: false,
+//     saveUninitialized: false,
+//     name: 'sid'
+// });
+
 
 app.get('/logout', function(req, res){
   req.logout();
