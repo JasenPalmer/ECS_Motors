@@ -79,6 +79,7 @@ googlePass.use(new GoogleStrategy( {
 
 	    		var newUser  = createNewUser(profile, id);
 	    		if(saveUser(newUser)) {
+	    			console.log("HERE");
 	    			var fixed = {
 	    				id: newUser.token,
 	    				firstname: newUser.firstname,
@@ -89,6 +90,7 @@ googlePass.use(new GoogleStrategy( {
 	    			console.log("New User: "+fixed);
 	    			return done(null, fixed);
 	    		}
+	    		console.log("IT REALLY SHOULDNT BE HERE");
 	    		return done(null);
 	    	}
 	    });
@@ -100,7 +102,7 @@ function createNewUser(profile, accessToken) {
 	var lastname = profile.name.familyName;
 	var username = profile.displayName;
 	var email = "email";//profile.emails[0];
-	console.log(accessToken);
+	//console.log(accessToken);
 	var token = accessToken;
 
 	var user = {
