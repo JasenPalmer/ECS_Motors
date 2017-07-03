@@ -79,7 +79,14 @@ googlePass.use(new GoogleStrategy( {
 
 	    		var newUser  = createNewUser(profile, id);
 	    		if(saveUser(newUser)) {
-	    			return done(null, newUser);
+	    			var fixed = {
+	    				id: newUser.token,
+	    				firstname: newUser.firstname,
+	    				lastname: newUser.lastname,
+	    				username: newUser.username,
+	    				email: newUser.email
+	    			};
+	    			return done(null, fixed);
 	    		}
 	    		return done(null);
 	    	}
@@ -100,18 +107,18 @@ function createNewUser(profile, accessToken) {
 		'lastname': lastname,
 		'username': username,
 		'email': email,
-		'id': token
+		'token': token
 	};
 	return user;
 }
 
 function saveUser(user) {
 	var q = squel.insert().into("users").setFieldsRows([{
-			id: user.id,
 			firstname: user.firstname, 
 			lastname: user.lastname, 
 			username: user.username, 
-			email: user.email
+			email: user.email,
+			token: user.token
 		}
 	]).toString();
 
