@@ -47,7 +47,7 @@ app.use(googlePass.initialize());
 app.use(googlePass.session());
 
 googlePass.serializeUser(function(user, done) {
-	console.log("serializeUser TOKEN: "+user.token);
+	console.log("serializeUser: "+user.token);
 	done(null, user.token);
 });
 
@@ -69,14 +69,15 @@ googlePass.use(new GoogleStrategy( {
 	    	console.log("EMAIL: "+profile.emails[0]);
 	    	//return done(null, profile);
 	    	//var fixAccessToken = accessToken.replace(".", "");
-	    	var user = isUser(accessToken);
+	    	var id = profile.id;
+	    	var user = isUser(id);
 	    	if(user) {
 	    		return done(null, user);
 	    	}else {
 	    		console.log("didnt find a user, creating one");
-	    		console.log("Access token: "+accessToken);
+	    		console.log("Access token: "+id);
 
-	    		var newUser  = createNewUser(profile, accessToken);
+	    		var newUser  = createNewUser(profile, id);
 	    		if(saveUser(newUser)) {
 	    			return done(null, newUser);
 	    		}
