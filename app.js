@@ -67,12 +67,14 @@ googlePass.use(new GoogleStrategy( {
 	    process.nextTick(function () {
 	    	console.log("EMAIL: "+profile.emails[0]);
 	    	//return done(null, profile);
+	    	var fixAccessToken = accessToken.replace(".", "");
 	    	var user = isUser(accessToken);
 	    	if(user) {
 	    		return done(null, user);
 	    	}else {
 	    		console.log("didnt find a user, creating one");
 	    		console.log("Access token: "+accessToken);
+
 	    		var newUser  = createNewUser(profile, accessToken);
 	    		if(!newUser) {
 	    			return done(null);
@@ -112,6 +114,7 @@ function saveUser(user) {
 			email: user.email, 
 			token: user.token}
 	]).toString();
+
 	//INSERT INTO user (firstname, lastname, username, email, token) VALUES ('"+user.firstname+"', '"+user.lastname+"', '"+user.username+"', '"+user.email+"', '"+user.token+"');";
 	console.log(q);
 	var query = client.query(q, function(err) {
