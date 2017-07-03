@@ -76,9 +76,6 @@ googlePass.use(new GoogleStrategy( {
 	    		console.log("Access token: "+fixAccessToken);
 
 	    		var newUser  = createNewUser(profile, fixAccessToken);
-	    		if(!newUser) {
-	    			return done(null);
-	    		}
 	    		if(saveUser(newUser)) {
 	    			return done(null, newUser);
 	    		}
@@ -130,7 +127,7 @@ function saveUser(user) {
 
 function isUser(accessToken) {
 	console.log("IS THIS THE PROBLEM??????");
-	var query = client.query("SELECT * FROM users WHERE token = "+accessToken+";");
+	var query = client.query("SELECT * FROM users WHERE token = '"+accessToken+"';");
 	var results = [];
 	query.on('row',function(row){
 		results.push(row);
