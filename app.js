@@ -67,15 +67,15 @@ googlePass.use(new GoogleStrategy( {
 	    process.nextTick(function () {
 	    	console.log("EMAIL: "+profile.emails[0]);
 	    	//return done(null, profile);
-	    	var fixAccessToken = accessToken.replace(".", "");
-	    	var user = isUser(fixAccessToken);
+	    	//var fixAccessToken = accessToken.replace(".", "");
+	    	var user = isUser(accessToken);
 	    	if(user) {
 	    		return done(null, user);
 	    	}else {
 	    		console.log("didnt find a user, creating one");
-	    		console.log("Access token: "+fixAccessToken);
+	    		console.log("Access token: "+accessToken);
 
-	    		var newUser  = createNewUser(profile, fixAccessToken);
+	    		var newUser  = createNewUser(profile, accessToken);
 	    		if(saveUser(newUser)) {
 	    			return done(null, newUser);
 	    		}
