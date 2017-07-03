@@ -39,85 +39,85 @@ router.use(googlePass.session());
 // 	}
 // ));
 
-googlePass.serializeUser(function(user, done) {
-  done(null, user);
-});
+// googlePass.serializeUser(function(user, done) {
+//   done(null, user);
+// });
 
-googlePass.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
+// googlePass.deserializeUser(function(obj, done) {
+//   done(null, obj);
+// });
 
 
-googlePass.use(new GoogleStrategy( {
-	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
-	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
-	callbackURL: "https://ecsmotors.herokuapp.com/auth/google/callback",
-	passReqToCallback: true
-	},
-	function(request, accessToken, refreshToken, profile, done) {
-    process.nextTick(function () {
-    	//return done(null, profile);
-    	var user = isUser(profile, accesToken);
-    	if(user) {
-    		return done(null, user);
-    	}else {
-    		console.log("didnt find a user, creating one");
-    		var newUser = newUser(profile, accessToken);
-    		if(!newUser) {
-    			return done(null);
-    		}
-    		return done(null, newUser);
-    	}
-    });
-  }
-));
+// googlePass.use(new GoogleStrategy( {
+// 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
+// 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
+// 	callbackURL: "https://ecsmotors.herokuapp.com/auth/google/callback",
+// 	passReqToCallback: true
+// 	},
+// 	function(request, accessToken, refreshToken, profile, done) {
+//     process.nextTick(function () {
+//     	//return done(null, profile);
+//     	var user = isUser(profile, accesToken);
+//     	if(user) {
+//     		return done(null, user);
+//     	}else {
+//     		console.log("didnt find a user, creating one");
+//     		var newUser = newUser(profile, accessToken);
+//     		if(!newUser) {
+//     			return done(null);
+//     		}
+//     		return done(null, newUser);
+//     	}
+//     });
+//   }
+// ));
 
-function newUser(profile, accessToken) {
-	//var firstname = "thisisaname";
-	console.log(profile);
-	console.log(profile.displayname);
-	var q = "INSERT INTO user (firstname, token) VALUES ('thisisaname', '"+accessToken+"');";
-	//var q = "INSERT INTO todo (item, completed) VALUES ('"+req.body.item+"', "+req.body.completed+");";
-	console.log(q);
-	var query = client.query(q, function(err) {
-		if(err) {
-			return false;
-		}
-		return true;
-	});
+// function newUser(profile, accessToken) {
+// 	//var firstname = "thisisaname";
+// 	console.log(profile);
+// 	console.log(profile.displayname);
+// 	var q = "INSERT INTO user (firstname, token) VALUES ('thisisaname', '"+accessToken+"');";
+// 	//var q = "INSERT INTO todo (item, completed) VALUES ('"+req.body.item+"', "+req.body.completed+");";
+// 	console.log(q);
+// 	var query = client.query(q, function(err) {
+// 		if(err) {
+// 			return false;
+// 		}
+// 		return true;
+// 	});
 
-	//saveUser(newUser);
-}
+// 	//saveUser(newUser);
+// }
 
-function saveUser(newUser) {
+// function saveUser(newUser) {
 	
-}
+// }
 
-function isUser(profile, accessToken) {
-	var query = client.query("SELECT * FROM users WHERE token = "+accessToken+";");
-	var results = [];
-	query.on('row',function(row){
-		results.push(row);
-	});
-	if(results.length = 0) {
-		return false;
-	}
-	else {
-		console.log("Found a user");
-		return results[0];
-	}
-}
+// function isUser(profile, accessToken) {
+// 	var query = client.query("SELECT * FROM users WHERE token = "+accessToken+";");
+// 	var results = [];
+// 	query.on('row',function(row){
+// 		results.push(row);
+// 	});
+// 	if(results.length = 0) {
+// 		return false;
+// 	}
+// 	else {
+// 		console.log("Found a user");
+// 		return results[0];
+// 	}
+// }
 
-router.get('/auth/google', 
-	googlePass.authenticate('google', 
-		{scope:['openid email profile'], failwithError: true})
-);
+// router.get('/auth/google', 
+// 	googlePass.authenticate('google', 
+// 		{scope:['openid email profile'], failwithError: true})
+// );
 
-router.get( '/auth/google/callback', 
-    	googlePass.authenticate( 'google', { 
-    		successRedirect: '/',
-    		failureRedirect: '/'
-}));
+// router.get( '/auth/google/callback', 
+//     	googlePass.authenticate( 'google', { 
+//     		successRedirect: '/',
+//     		failureRedirect: '/'
+// }));
 
 router.get('/logout', function(req, res){
   req.logout();
