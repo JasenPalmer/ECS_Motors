@@ -51,7 +51,7 @@ googlePass.serializeUser(function(user, done) {
 });
 
 googlePass.deserializeUser(function(obj, done) {
-	
+
   done(null, obj);
 });
 
@@ -64,11 +64,53 @@ googlePass.use(new GoogleStrategy( {
 	},
 	function(request, accessToken, refreshToken, profile, done) {
 	    process.nextTick(function () {
-	    	console.log(profile);
+	    	console.log("EMAIL: "+profile.emails);
 	    	return done(null, profile);
-    	});
-  	}
+	    	// var user = isUser(profile, accesToken);
+	    	// if(user) {
+	    	// 	return done(null, user);
+	    	// }else {
+	    	// 	console.log("didnt find a user, creating one");
+	    	// 	var newUser = newUser(profile, accessToken);
+	    	// 	if(!newUser) {
+	    	// 		return done(null);
+	    	// 	}
+	    	// 	return done(null, newUser);
+	    	// }
+	    });
+	}
 ));
+
+function newUser(profile, accessToken) {''
+	var firstname = profile.name.givenName;
+	var lastname = profile.name.familyName;
+	//var email = profile.emails
+	
+	var q = "INSERT INTO user (firstname, token) VALUES ('thisisaname', '"+accessToken+"');";
+	//var q = "INSERT INTO todo (item, completed) VALUES ('"+req.body.item+"', "+req.body.completed+");";
+	console.log(q);
+	var query = client.query(q, function(err) {
+		if(err) {
+			return false;
+		}
+		return true;
+	});
+}
+
+function isUser(profile, accessToken) {
+	var query = client.query("SELECT * FROM users WHERE token = "+accessToken+";");
+	var results = [];
+	query.on('row',function(row){
+		results.push(row);
+	});
+	if(results.length = 0) {
+		return false;
+	}
+	else {
+		console.log("Found a user");
+		return results[0];
+	}
+}
 
 
 app.put('/users', function(req, res, next) {
