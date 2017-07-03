@@ -96,7 +96,7 @@ function isUser(profile, accessToken) {
 
 router.get('/auth/google', 
 	googlePass.authenticate('google', 
-		{scope:['openid email profile'], failwithError: true})
+		{scope:['openid email profile']})
 );
 
 router.get( '/auth/google/callback', 
