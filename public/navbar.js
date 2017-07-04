@@ -100,7 +100,7 @@ $(document).ready(function(e) {
 	});
 
     $('#butSub').click(function() {
-        swal('Get Back To You Soon!','Email Sent Successfully','success');
+       swal('Get Back To You Soon!','Email Sent Successfully','success');
     });
 
 });
