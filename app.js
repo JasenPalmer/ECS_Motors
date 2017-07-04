@@ -48,10 +48,10 @@ app.use(function (req, res, next) {
 
 function isLoggedIn (req, res, next) {
 	if(req.user) {
-		console.log("Not logged in");
+
 		return next();
 	}
-	console.log("logged in");
+
 	res.redirect('/');
 }
 
@@ -67,7 +67,6 @@ app.use(passport.session());
 
 app.use(function(req, res, next) {
   res.on('header', function() {
-	console.trace('HEADERS GOING TO BE WRITTEN');
   });
   next();
 });
@@ -109,19 +108,19 @@ passport.use(new localStrategy({
 	function(req,username, password, done) {
 		findByUsername(username, function(err, user) {
 			if(err) {
-				console.log("Which");
+
 				return done(err);
 			}
 			if(!user) {
-				console.log("one");
+
 				return done(null, false, {message: 'Incorrect username'});
 			}
 
 			if(!comparePass(user.password, password)) {
-				console.log("is being");
+
 				return done(null, false, {message: 'Incorrect password'});
 			}
-			console.log("called?");
+
 			return done(null, user);
 		});
 	}
@@ -138,8 +137,6 @@ function findByUsername(username, callback) {
 		if(err) {
 			callback && callback(err, false);
 		}
-		console.log("Row from DB");
-		console.log(results.rows);
 		if(results.rows[0] == undefined) {
 			callback && callback(null, false);
 			return;
@@ -151,26 +148,20 @@ function findByUsername(username, callback) {
 			username: results.rows[0].username,
 			email: results.rows[0].email
 		}
-		console.log("Constructed user");
-		console.log(user);
 		callback && callback(null, user);
 	});
 }
 
 function findById(id, callback) {
 	var q = "SELECT * FROM users WHERE id = "+id+";";
-	console.log("query: "+q);
 	client.query(q, function(err, results) {
 		if(err) {
-			console.log("what");
 			callback && callback(err, false);
 		}
 		if(results.rows == []) {
-			console.log("IS");
 			callback && callback(null, false);
 			return false;
 		}
-		console.log("Happening");
 		var user = {
 			id: results.rows[0].id,
 			firstname: results.rows[0].firstname,
@@ -206,7 +197,6 @@ passport.use(new GoogleStrategy( {
 					createNewUser(profile, id, function(newUser) {
 						saveUser(newUser, function(saved) {
 							if(saved) {
-								console.log("HERE");
 								var fixed = {
 								id: newUser.token,
 								firstname: newUser.firstname,
@@ -214,10 +204,8 @@ passport.use(new GoogleStrategy( {
 								username: newUser.username,
 								email: newUser.email
 								}
-							console.log("New User: "+fixed);
 							return done(null, fixed);
 							}
-							console.log("IT REALLY SHOULDNT BE HERE");
 							return done(null);
 						});
 					});
@@ -234,7 +222,6 @@ function createNewUser(profile, accessToken, callback) {
 	var lastname = profile.name.familyName;
 	var username = profile.displayName;
 	var email = profile.emails[0];
-	//console.log(accessToken);
 	var token = accessToken;
 
 	var user = {
@@ -301,9 +288,8 @@ app.post('/users/register', function(req,res) {
 	var passDigest = bcrypt.hashSync(req.body.password, 10);
 
 	var q = "INSERT INTO users (firstname, lastname, username, email, password) VALUES ('"+req.body.firstname+"', '"+req.body.lastname+"', '"+req.body.username+"', '"+req.body.email+"', '"+passDigest+"');";
-	console.log(q);
+
 	client.query(q, function(error, results) {
-		console.log(results.rows);
 		if(error) {
 			res.status(400).json({
 				status: 'failed',
@@ -318,16 +304,6 @@ app.post('/users/register', function(req,res) {
 			});
 		}
 	});
-	// var user = {
-	// 	username: req.body.username
-	// }
-	// req.login(user, function(err) {
-	// 	if(err) {
-	// 		res.redirect('/fail');
-	// 	}else {
-	// 		res.redirect('/');
-	// 	}
-	// });
 });
 
 
@@ -355,8 +331,6 @@ app.get('/logout', function(req, res){
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
-	console.log("REQ.USER");
-	console.log(req.user);
   res.render('index', {
 	title: 'ECS Motors',
 	user: req.user
@@ -385,12 +359,10 @@ app.get('/contact', function(req, res) {
 });
 var r;
 app.post('/search', function(req, res){
-	console.log("hey")
 	var search_query = req.body.query.split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } ).join(' | ');
 	//WHERE cars.tsv @@ to_tsquery('"+search_query+"')
 	var q = "SELECT * FROM cars WHERE cars.tsv @@ to_tsquery('"+search_query+"')"
 	//var s = squel.select().from("cars").where("cars.tsv @@ to_tsquery('"+search_query+"');").toString();
-	console.log(q);
 	var query = client.query(q, function(error,result) {
 r = result
 		if(error) {
@@ -403,7 +375,6 @@ r = result
 		else {
 			//After all data is returned, close connection and return results
 			query.on('end', function(){
-				console.log(r);
 				res.render('search', {
 					title: 'ECS Motors',
 					data: r
@@ -423,7 +394,6 @@ app.get('/search',function(req,res){
 
 app.get('/cars/:id', function(req, res) {
 	var id = parseInt(req.params.id);
-	console.log("Car id: "+id);
 	client.query("SELECT * FROM cars WHERE id = "+id+";", function(err, results) {
 		if(err) {
 			res.status(400).json({
@@ -431,8 +401,6 @@ app.get('/cars/:id', function(req, res) {
 				message: 'failed to get car'
 			});
 		}else {
-			console.log("REsults");
-			console.log(results.rows);
 			res.send(results.rows);
 		}
 
@@ -443,19 +411,15 @@ app.get('/cars/:id', function(req, res) {
 
 app.put('/cars/:id', function(req, res) {
 	var id = parseInt(req.params.id);
-	console.log("Car id: "+id);
 	var query = client.query("UPDATE cars SET count = (count+1) WHERE id = "+id+";");
 });
 
 app.put('/payment', function(req, res) {
 	var id = parseInt(req.params.id);
-	console.log("Car id: "+id);
 	var query = client.query("UPDATE cars SET count = (1);");
 });
 
 app.get('/authorisedPage', isLoggedIn, function(req, res, next) {
-	console.log("REQ.USER: ");
-	console.log(req.user);
 	res.render('authorisedPage', {
 		title: 'ECS Motors',
 		user: req.user

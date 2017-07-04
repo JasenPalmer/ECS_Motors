@@ -3,23 +3,20 @@ $(document).ready(function(e) {
 	$('.carClick').click(function() {
 		var id = $(this).attr("id"); //get the car id number
 		var imgSrc = $(this).attr("src");
-		console.log("Image: "+imgSrc);
-		console.log("id: "+id);
 		$.ajax({
 			url: '/cars/'+id,
 			method: 'GET',
 			dataType: 'json',
 			contentType: "application/json; charset=utf-8",
 			success: function(result) {
-				console.log("Successfull request");
 				if(result.length == 0){
-					console.error("The car was not found");
+					console.error("The car was not found"+JSON.stringify(result));
 					return;
 				}
 				appendInfoToModal(result, imgSrc);
 			},
 			error: function(result) {
-				console.log("Something went wrong");
+				console.error("Something went wrong"+JSON.stringify(result));
 			}
 		});
 	});
@@ -29,7 +26,6 @@ $(document).ready(function(e) {
 	function addItemToCart(car){
 		for(var i in newToCart){
 			if(newToCart[i].id === car.id){
-				//newToCart[i].count++;
 			$.ajax({
 				url: '/cars/'+newToCart[i].id,
 				method: 'PUT',
@@ -71,7 +67,7 @@ $(document).ready(function(e) {
         	dataType: "json", 
         	async: false
    		 }).responseText);
-		//console.log(data[0]);
+
 
 		total += (cars[n].price*data[0].count);
 		modalHtmlTest += '<h3 class="modal-title">'+cars[n].brand+' '+cars[n].model+' Quantity '+data[0].count+'</h3>';
@@ -120,7 +116,6 @@ $(document).ready(function(e) {
 	var butTemp;
 	//create Html for the modal to display car information
 	function appendInfoToModal(car, imgSrc) {
-		console.log("Image: "+imgSrc);
 		modalHtml = '<div class="modal-dialog" id="carmodal">';
 		modalHtml += '<div class="modal-content">';
 		modalHtml += '<div class="modal-header">';

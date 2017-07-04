@@ -8,7 +8,6 @@ $(document).ready(function(e) {
 		var user = $('#user').val();
 		var pass = $('#pass').val();
 		if(user === "" || pass === ""){return;}
-		console.log("Username: "+user+" Password: "+pass);
 		$.ajax({
 		  url: '/users/login',
 		  method: 'POST',
@@ -57,7 +56,6 @@ $(document).ready(function(e) {
 			dataType: 'json',
 			contentType: "application/json; charset=tf-8",
 			success: function(result) {
-				//console.log(result.redirect);
 				window.location = result.redirect;
 				console.log("Successfully added new user");
 			},
