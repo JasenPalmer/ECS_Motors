@@ -19,7 +19,10 @@ $(document).ready(function(e) {
 	      dataType: 'json',
 	      contentType: "application/json; charset=utf-8",
 	      success: function(result) {
-	      	console.log("Successfully sent");
+	      	console.log(result);
+	      	if(result.redirect) {
+	      		window.location.href = result.redirect;
+	      	}
 	      },
 	      error: function(result) {
 	        console.log(result);
@@ -54,6 +57,8 @@ $(document).ready(function(e) {
 			dataType: 'json',
 			contentType: "application/json; charset=tf-8",
 			success: function(result) {
+				//console.log(result.redirect);
+				window.location = result.redirect;
 	      		console.log("Successfully added new user");
 		    },
 		    error: function(result) {
