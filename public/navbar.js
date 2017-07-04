@@ -70,27 +70,27 @@ $(document).ready(function(e) {
 	});
 
 	$('#srch-btn').click(function(event) {
-        event.preventDefault();
+		event.preventDefault();
 		var query = $('#srch-trm').val();
 		if(query === ""){return;}
 
-    $.ajax({
-      url:'/search',
-      method: 'POST',
-      data: JSON.stringify({
-        'query': query
-      }),
-      dataType: 'json',
-      contentType: "application/json; charset=tf-8",
-      success: function(result) {
-          console.log(result)
-        window.location = '/search';
-        },
-        error: function(result) {
-            console.log(result)
-          window.location = '/search';
-        }
-    });
+	$.ajax({
+	  url:'/search',
+	  method: 'POST',
+	  data: JSON.stringify({
+		'query': query
+	  }),
+	  dataType: 'json',
+	  contentType: "application/json; charset=tf-8",
+	  success: function(result) {
+		  console.log(result)
+		window.location = '/search';
+		},
+		error: function(result) {
+			console.log(result)
+		  window.location = '/search';
+		}
+	});
 	});
 
 	$('#google-login').click(function () {
@@ -100,8 +100,8 @@ $(document).ready(function(e) {
 		});
 	});
 
-    $('#butSub').click(function() {
-       swal('Get Back To You Soon!','Email Sent Successfully','success');
-    });
+	$('#butSub').click(function() {
+	   swal('Get Back To You Soon!','Email Sent Successfully','success');
+	});
 
 });

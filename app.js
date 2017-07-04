@@ -69,6 +69,7 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(token, done) {
 	console.log("deserializeUser: "+token);
 	var tokenVal = parseInt(token);
+
 	findById(tokenVal, function(err, user) {
 		if(err) {
 			done(err);
@@ -78,6 +79,7 @@ passport.deserializeUser(function(token, done) {
 		}
 		done(user);
 	});
+
 });
 
 passport.use(new localStrategy({
@@ -103,7 +105,6 @@ passport.use(new localStrategy({
 function comparePass(pass, pass2) {
 	return true;
 }
-
 
 function findByUsername(username, callback) {
 	var q = "SELECT * FROM users WHERE username = '"+username+"';";
@@ -148,8 +149,6 @@ function findById(id, callback) {
 	});
 }
 
-
-
 passport.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
@@ -158,40 +157,40 @@ passport.use(new GoogleStrategy( {
 	passReqToCallback: true
 	},
 	function(request, accessToken, refreshToken, profile, done) {
-	    process.nextTick(function () {
-	    	isUser(profile.id, function(user) {
+		process.nextTick(function () {
+			isUser(profile.id, function(user) {
 				if(user) {
 					var fixed = {
-			    				id: user.token,
-			    				firstname: user.firstname,
-			    				lastname: user.lastname,
-			    				username: user.username,
-			    				email: user.email
-			    				}
-		    		return done(null, fixed);
-		    	}else {
+								id: user.token,
+								firstname: user.firstname,
+								lastname: user.lastname,
+								username: user.username,
+								email: user.email
+								}
+					return done(null, fixed);
+				}else {
 					createNewUser(profile, id, function(newUser) {
-		    			saveUser(newUser, function(saved) {
-		    				if(saved) {
-		    					console.log("HERE");
-			    				var fixed = {
-			    				id: newUser.token,
-			    				firstname: newUser.firstname,
-			    				lastname: newUser.lastname,
-			    				username: newUser.username,
-			    				email: newUser.email
-			    				}
-			    			console.log("New User: "+fixed);
-			    			return done(null, fixed);
-		    				}
-		    				console.log("IT REALLY SHOULDNT BE HERE");
-		    				return done(null);
-		    			});
-		    		});
-		    	}
-	    	});
+						saveUser(newUser, function(saved) {
+							if(saved) {
+								console.log("HERE");
+								var fixed = {
+								id: newUser.token,
+								firstname: newUser.firstname,
+								lastname: newUser.lastname,
+								username: newUser.username,
+								email: newUser.email
+								}
+							console.log("New User: "+fixed);
+							return done(null, fixed);
+							}
+							console.log("IT REALLY SHOULDNT BE HERE");
+							return done(null);
+						});
+					});
+				}
+			});
 
-	    });
+		});
 	}
 ));
 
@@ -310,9 +309,9 @@ app.get('/auth/google',
 );
 
 app.get( '/auth/google/callback',
-    	passport.authenticate( 'google', {
-    		successRedirect: '/',
-    		failureRedirect: '/login'
+		passport.authenticate( 'google', {
+			successRedirect: '/',
+			failureRedirect: '/login'
 }));
 
 app.get('/logout', function(req, res){
@@ -350,44 +349,40 @@ app.get('/contact', function(req, res) {
 });
 var r;
 app.post('/search', function(req, res){
-    console.log("hey")
-
-    var search_query = req.body.query.split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } ).join(' | ');
-    //WHERE cars.tsv @@ to_tsquery('"+search_query+"')
-  	var q = "SELECT * FROM cars WHERE cars.tsv @@ to_tsquery('"+search_query+"')"
-    //var s = squel.select().from("cars").where("cars.tsv @@ to_tsquery('"+search_query+"');").toString();
-    console.log(q);
-  	var query = client.query(q, function(error,result) {
+	console.log("hey")
+	var search_query = req.body.query.split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } ).join(' | ');
+	//WHERE cars.tsv @@ to_tsquery('"+search_query+"')
+	var q = "SELECT * FROM cars WHERE cars.tsv @@ to_tsquery('"+search_query+"')"
+	//var s = squel.select().from("cars").where("cars.tsv @@ to_tsquery('"+search_query+"');").toString();
+	console.log(q);
+	var query = client.query(q, function(error,result) {
 r = result
-  		if(error) {
-            console.log(error)
-  			res.status(400).json({
-  				status: 'failed',
-  				message: 'failed to search'
-  			});
-  		}
-  		else {
-        	//After all data is returned, close connection and return results
-        	query.on('end', function(){
-                console.log(r);
-        		//client.end();
-        		//res.send(result);
-
-                res.render('search', {
-                    title: 'ECS Motors',
-                    data: r
-                });
-        	});
-  		}
-  	});
+		if(error) {
+			console.log(error)
+			res.status(400).json({
+				status: 'failed',
+				message: 'failed to search'
+			});
+		}
+		else {
+			//After all data is returned, close connection and return results
+			query.on('end', function(){
+				console.log(r);
+				res.render('search', {
+					title: 'ECS Motors',
+					data: r
+				});
+			});
+		}
+	});
 });
 
 app.get('/search',function(req,res){
-    res.render('search', {
-        title: 'ECS Motors',
-        data: r,
+	res.render('search', {
+		title: 'ECS Motors',
+		data: r,
 	user: req.user
-    });
+	});
 });
 
 app.get('/cars/:id', function(req, res) {
@@ -399,7 +394,6 @@ app.get('/cars/:id', function(req, res) {
 	query.on('row',function(row){
 		results.push(row);
 	});
-
 	//After all data is returned, close connection and return results
 	query.on('end', function(){
 		//client.end();
@@ -410,11 +404,8 @@ app.get('/cars/:id', function(req, res) {
 app.put('/cars/:id', function(req, res) {
 	var id = parseInt(req.params.id);
 	console.log("Car id: "+id);
-
 	var query = client.query("UPDATE cars SET count = (count+1) WHERE id = "+id+";");
-
 });
-
 
 app.get('/authorisedPage', isLoggedIn, function(req, res, next) {
 	console.log("REQ.USER: ");

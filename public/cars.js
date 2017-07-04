@@ -1,7 +1,5 @@
 $(document).ready(function(e) {
 
-
-
 	$('.carClick').click(function() {
 		var id = $(this).attr("id"); //get the car id number
 		var imgSrc = $(this).attr("src");
@@ -72,7 +70,7 @@ $(document).ready(function(e) {
 		$('#cartInfo').empty();
 
 	  for(var i in newToCart){
-	   	$.ajax({
+		$.ajax({
 			url: '/cars/'+newToCart[i].id,
 			method: 'GET',
 			dataType: 'json',
@@ -86,7 +84,7 @@ $(document).ready(function(e) {
 				//console.log(newToCart[i].count);
 				total += (result[0].count*result[0].price)
 				console.log(result[0].count*result[0].price);
-				
+
 				appendInfoToCartModal(result);
 			},
 			error: function(result) {
@@ -97,7 +95,7 @@ $(document).ready(function(e) {
 	  console.log(total);
 	  total = 0;
 	})
-	
+
 	function appendInfoToCartModal(car) {
 		//total.push(car[0].count*car[0].price);
 		console.log(total);
@@ -128,7 +126,7 @@ $(document).ready(function(e) {
 		$('#cartInfo').modal();
 
 	}
-		
+
 
 	function getTotal(){
 		var t = 0;
@@ -139,7 +137,7 @@ $(document).ready(function(e) {
 		total = [];
 	}
 
-	var modalHtml; 
+	var modalHtml;
 	var butTemp;
 	//create Html for the modal to display car information
 	function appendInfoToModal(car, imgSrc) {
@@ -168,7 +166,7 @@ $(document).ready(function(e) {
 		modalHtml += '</div></div></div>';
 
 		$('#carInfo').empty().append(modalHtml);
-		
+
 		for (var i = document.getElementsByTagName('button').length - 1; i >= 0; i--) {
 			if(document.getElementsByTagName('button')[i].id == "AddNow"){
 				document.getElementsByTagName('button')[i].addEventListener("click",function(e){
@@ -184,15 +182,3 @@ $(document).ready(function(e) {
 	}
 
 });
-
-
-
-
-				
-					
-		        		
-					
-					
-					
-					
-					
