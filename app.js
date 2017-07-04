@@ -206,7 +206,7 @@ passport.use(new GoogleStrategy( {
 			    				email: user.email
 			    				}
 		    		return done(null, fixed);
-		    	}else {					
+		    	}else {
 					createNewUser(profile, id, function(newUser) {
 		    			saveUser(newUser, function(saved) {
 		    				if(saved) {
@@ -223,11 +223,11 @@ passport.use(new GoogleStrategy( {
 		    				}
 		    				console.log("IT REALLY SHOULDNT BE HERE");
 		    				return done(null);
-		    			}); 
+		    			});
 		    		});
 		    	}
 	    	});
-	    	
+
 	    });
 	}
 ));
@@ -255,9 +255,9 @@ r
 // save a user into database
 function saveUser(user, callback) {
 	var q = squel.insert().into("users").setFieldsRows([{
-			firstname: user.firstname, 
-			lastname: user.lastname, 
-			username: user.username, 
+			firstname: user.firstname,
+			lastname: user.lastname,
+			username: user.username,
 			email: user.email,
 			token: user.token
 		}
@@ -335,19 +335,19 @@ app.post('/users/register', function(req,res) {
 });
 
 
-app.post('/users/login', passport.authenticate('local', {failureRedirect: '/login'}), 
+app.post('/users/login', passport.authenticate('local', {failureRedirect: '/login'}),
 	function(req, res) {
 	res.send({redirect: '/'});
 	}
 );
 
-app.get('/auth/google', 
-	passport.authenticate('google', 
+app.get('/auth/google',
+	passport.authenticate('google',
 		{scope:['openid email profile']})
 );
 
-app.get( '/auth/google/callback', 
-    	passport.authenticate( 'google', { 
+app.get( '/auth/google/callback',
+    	passport.authenticate( 'google', {
     		successRedirect: '/',
     		failureRedirect: '/login'
 }));
@@ -361,7 +361,7 @@ app.get('/logout', function(req, res){
 app.get('/', function(req, res, next) {
 	console.log("REQ.USER");
 	console.log(req.user);
-  res.render('index', { 
+  res.render('index', {
   	title: 'ECS Motors',
   	user: req.user
    });
