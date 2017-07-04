@@ -176,7 +176,7 @@ function findById(id, callback) {
 passport.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
-	callbackURL: "https://ecsmotots.herokuapp.com/auth/google/callback",
+	callbackURL: "https://ecsmotors.herokuapp.com/auth/google/callback",
 	//callbackURL: "http://localhost:8080/auth/google/callback",
 	passReqToCallback: true
 	},
