@@ -424,16 +424,20 @@ app.get('/search',function(req,res){
 app.get('/cars/:id', function(req, res) {
 	var id = parseInt(req.params.id);
 	console.log("Car id: "+id);
-	var query = client.query("SELECT * FROM cars WHERE id = "+id+";");
-	var results = [];
-	//Stream results back one row at a time
-	query.on('row',function(row){
-		results.push(row);
-	});
-	//After all data is returned, close connection and return results
-	query.on('end', function(){
-		//client.end();
-		res.send(results);
+	client.query("SELECT * FROM cars WHERE id = "+id+";", function(err, results) {
+		if(err) {
+			res.status(400).json({
+				status: 'failed',
+				message: 'failed to get car'
+			});
+		}else {
+			console.log("REsults");
+			console.log(results.rows);
+			res.send(results.rows);
+		}
+
+
+
 	});
 });
 

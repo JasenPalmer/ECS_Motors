@@ -10,7 +10,7 @@
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="navbar.js"></script>
-		<script src="cars.js"></script>
+		<script src="search.js"></script>
 
 
 		<title><%= title %></title>
@@ -33,7 +33,6 @@
 						<img id= <%= JSON.stringify(data.rows[i].id) %> class="img-responsive carClick" src=<%= image %> alt= <%= JSON.stringify(data.rows[i].brand) %>>
 					</div>
 				<% } %>
-
 		</div>
 
 		<!-- Car info modal -->

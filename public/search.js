@@ -4,7 +4,6 @@ $(document).ready(function(e) {
 		var id = $(this).attr("id"); //get the car id number
 		var imgSrc = $(this).attr("src");
 		console.log("Image: "+imgSrc);
-		console.log("id: "+id);
 		$.ajax({
 			url: '/cars/'+id,
 			method: 'GET',
@@ -86,7 +85,7 @@ $(document).ready(function(e) {
 		modalHtmlTest += '<h3 align="center">Total Price: '+total+'</h3>';
 		modalHtmlTest += '</div>';
 		modalHtmlTest += '<div class="modal-footer">';
-		modalHtmlTest += '<button data-dismiss="modal" id="cartBuyButton" type="button" class="btn btn-success btn-block">Buy Chosen Cars</button>';
+		modalHtmlTest += '<button id="cartBuyButton" type="button" class="btn btn-success btn-block">Buy Chosen Cars</button>';
 		modalHtmlTest += '</div>';
 		modalHtmlTest += '</div></div></div></div>';
 		$('#cartInfo').append(modalHtmlTest);
@@ -96,7 +95,7 @@ $(document).ready(function(e) {
 		for (var i = document.getElementsByTagName('button').length - 1; i >= 0; i--) {
 			if(document.getElementsByTagName('button')[i].id == "cartBuyButton"){
 				document.getElementsByTagName('button')[i].addEventListener("click",function(e){
-					//$('#cartInfo').empty();
+					$('#cartInfo').empty();
 					newToCart = [];
 					$.ajax({
 						url: '/payment',
@@ -141,7 +140,6 @@ $(document).ready(function(e) {
 		modalHtml += '<h3 align="center">Price: $'+car[0].price+'</h3>';
 		modalHtml += '</div></div></div>';
 		modalHtml += '<div class="modal-footer">';
-		modalHtml += '<button id="AddNow" data-dismiss="modal" class="btn btn-info btn-block">Add To Cart</button>';
 		modalHtml += '</div></div></div>';
 
 		$('#carInfo').empty().append(modalHtml);
@@ -149,7 +147,7 @@ $(document).ready(function(e) {
 		for (var i = document.getElementsByTagName('button').length - 1; i >= 0; i--) {
 			if(document.getElementsByTagName('button')[i].id == "AddNow"){
 				document.getElementsByTagName('button')[i].addEventListener("click",function(e){
-					//$('#carInfo').empty();
+					$('#carInfo').empty();
 					addItemToCart(car[0]);
 					swal('This Car Is Added To Cart!','Buy Them Soon','success');
 				});
