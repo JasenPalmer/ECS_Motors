@@ -184,10 +184,13 @@ input[type=submit]:hover {
 }
 
 .tab1{
-
 	width: 75%;
 	margin: auto;
 	font-style: italic;
 	font-size: 17px;
+}
 
+#carBut{
+
+    margin: auto;
 }

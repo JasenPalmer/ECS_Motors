@@ -407,6 +407,12 @@ app.put('/cars/:id', function(req, res) {
 	var query = client.query("UPDATE cars SET count = (count+1) WHERE id = "+id+";");
 });
 
+app.put('/payment', function(req, res) {
+	var id = parseInt(req.params.id);
+	console.log("Car id: "+id);
+	var query = client.query("UPDATE cars SET count = (1);");
+});
+
 app.get('/authorisedPage', isLoggedIn, function(req, res, next) {
 	console.log("REQ.USER: ");
 	console.log(req.user);
