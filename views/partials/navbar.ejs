@@ -1,0 +1,30 @@
+<!-- Navigation bar -->
+		<div class="navbar navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+				<a class="navbar-brand" href="/"><%= title %></a>
+				</div>
+				<!-- Navigation tabs -->
+	            <ul class="nav navbar-nav navbar-left">
+	              <li ><a href="/cars">Cars</a></li>
+	              <li><a href="/contact">Contact</a></li>
+	            </ul>
+	            <ul class="nav navbar-nav navbar-right">
+	            <!-- Seacrch and login -->
+	            <li>
+	            	<form class="navbar-form" role="search">
+	            		<div class="input-group search-box">
+	            			<input class="form-control" placeholder="Search" type="text" name="srch-term" id="srch-trm">
+	            			<div class="input-group-btn">
+	            				<button id="srch-btn" class="btn btn-default" >
+	            					<i class="glyphicon glyphicon-search"></i>
+	            				</button>
+	            			</div>
+	            	</form>
+	            </li>
+	            <li>
+	           		<a id="login" href="#"><%= user ? user.username : "Login/Register"; %></a>
+	            </li>
+	            </ul>
+			</div>
+		</div>

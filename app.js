@@ -30,6 +30,9 @@ client.connect();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+
+
+
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -51,25 +54,32 @@ function isLoggedIn (req, res, next) {
 	console.log("logged in");
 	res.redirect('/');
 }
+
 app.use(session({
 	secret: 'THIS IS THE SECRET',
 	resave: false,
-	saveUninitialized: true,
-	cookie: {secure: false}
-	}));
+	saveUninitialized: true
+	//cookie: {secure: false}
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(function(req, res, next) {
+  res.on('header', function() {
+    console.trace('HEADERS GOING TO BE WRITTEN');
+  });
+  next();
+});
+
 
 passport.serializeUser(function(user, done) {
-	console.log("serializeUser: "+user);
 	done(null, user.id);
 });
 
 passport.deserializeUser(function(token, done) {
-	console.log("deserializeUser: "+token);
 	var tokenVal = parseInt(token);
-	if(tokenVal > 100) {
+	if(tokenVal > 1000) {
 		isUser(token, function(user) {
 			var fixed = {
 					    id: user.token,
@@ -100,15 +110,19 @@ passport.use(new localStrategy({
 	function(req,username, password, done) {
 		findByUsername(username, function(err, user) {
 			if(err) {
+				console.log("Which");
 				return done(err);
 			}
 			if(!user) {
+				console.log("one");
 				return done(null, false, {message: 'Incorrect username'});
 			}
 
 			if(!comparePass(user.password, password)) {
+				console.log("is being");
 				return done(null, false, {message: 'Incorrect password'});
 			}
+			console.log("called?");
 			return done(null, user);
 		});
 	}
@@ -120,14 +134,17 @@ function comparePass(pass, pass2) {
 
 
 function findByUsername(username, callback) {
-	var q = "SELECT * FROM users WHERE username = '"+username+"';";
+	var q = squel.select().from("users").where("username = ?", username).toString();
+	//var q = "SELECT * FROM users WHERE username = '"+username+"';";
 	client.query(q, function(err, results) {
 		if(err) {
 			callback && callback(err, false);
 		}
+		console.log("Row from DB");
 		console.log(results.rows);
 		if(results.rows[0] == undefined) {
 			callback && callback(null, false);
+			return;
 		}
 		var user = {
 			id: results.rows[0].id,
@@ -136,20 +153,26 @@ function findByUsername(username, callback) {
 			username: results.rows[0].username,
 			email: results.rows[0].email
 		}
+		console.log("Constructed user");
+		console.log(user);
 		callback && callback(null, user);
 	});
 }
 
 function findById(id, callback) {
 	var q = "SELECT * FROM users WHERE id = "+id+";";
+	console.log("query: "+q);
 	client.query(q, function(err, results) {
 		if(err) {
+			console.log("what");
 			callback && callback(err, false);
 		}
 		if(results.rows == []) {
+			console.log("IS");
 			callback && callback(null, false);
 			return false;
 		}
+		console.log("Happening");
 		var user = {
 			id: results.rows[0].id,
 			firstname: results.rows[0].firstname,
@@ -228,7 +251,7 @@ function createNewUser(profile, accessToken, callback) {
 	callback && callback(user);
 	return user;
 }
-
+r
 // save a user into database
 function saveUser(user, callback) {
 	var q = squel.insert().into("users").setFieldsRows([{
@@ -294,7 +317,8 @@ app.post('/users/register', function(req,res) {
 		else {
 			res.status(201).json({
 				status: 'success',
-				message: 'successfully added new user'
+				message: 'successfully added new user',
+				redirect: '/users/login'
 			});
 		}
 	});
@@ -311,11 +335,11 @@ app.post('/users/register', function(req,res) {
 });
 
 
-app.post('/users/login', passport.authenticate('local', 
-	{successRedirect: '/',
-	failureRedirect: '/',
-	failureFlash: true}
-));
+app.post('/users/login', passport.authenticate('local', {failureRedirect: '/login'}), 
+	function(req, res) {
+	res.send({redirect: '/'});
+	}
+);
 
 app.get('/auth/google', 
 	passport.authenticate('google', 
@@ -335,6 +359,8 @@ app.get('/logout', function(req, res){
 
 /* GET home page. */
 app.get('/', function(req, res, next) {
+	console.log("REQ.USER");
+	console.log(req.user);
   res.render('index', { 
   	title: 'ECS Motors',
   	user: req.user
@@ -420,31 +446,13 @@ app.get('/cars/:id', function(req, res) {
 	});
 });
 
-app.get('/authorisedPage', isLoggedIn, function(req, res, next) {
+app.get('/authorisedPage', function(req, res, next) {
 	console.log("REQ.USER: ");
 	console.log(req.user);
 	res.render('authorisedPage', {
 		title: 'ECS Motors',
 		user: req.user
 	});
-});
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
 });
 
 app.listen(port,function() {
