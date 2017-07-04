@@ -25,13 +25,6 @@ $(document).ready(function(e) {
 
 	var Cart = [];
 	var newToCart = [];
-	var Item = function(id,name,price,count){
-		this.id = id;
-		this.name = name;
-		this.price = price;
-		this.count = count;
-	}
-
 	function addItemToCart(car){
 		for(var i in newToCart){
 			if(newToCart[i].id === car.id){
@@ -52,51 +45,78 @@ $(document).ready(function(e) {
 		return;
 		}
 	}
-		//var item = new Item(id,name,price,count);
 		newToCart.push(car);
 	}
 
-	function displayCart(){
-		for(var i in newToCart){
-			console.log(newToCart[i]);
+	var total = 0;
+	$('#DisplayCart').click(function(){		
+		$('#cartInfo').empty();
+		appendInfoToCartModalTest(newToCart);
+	})
+
+	var modalHtmlTest;
+	function appendInfoToCartModalTest(cars) {
+		var total = 0;
+		modalHtmlTest = '<div class="modal-dialog" id="carmodal">';
+		modalHtmlTest += '<div class="modal-content">';
+		modalHtmlTest += '<div class="modal-header">';
+		modalHtmlTest += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+		modalHtmlTest += '<div class="modal-header">';
+		
+		for(var n in cars){
+			var data = $.parseJSON($.ajax({
+        	url:  '/cars/'+cars[n].id,
+        	method: 'GET',
+        	dataType: "json", 
+        	async: false
+   		 }).responseText);
+		//console.log(data[0]);
+
+		total += (cars[n].price*data[0].count);
+		modalHtmlTest += '<h3 class="modal-title">'+cars[n].brand+' '+cars[n].model+' Quantity '+data[0].count+'</h3>';
+		modalHtmlTest += '</br>';
+		modalHtmlTest += '<h4 align="center">'+cars[n].transmission+'</h4>';
+		modalHtmlTest += '<h4 align="center">'+cars[n].year+'</h4>';
+		modalHtmlTest += '<h4 align="center">Price: $'+(cars[n].price*data[0].count)+'</h4>';
+		modalHtmlTest += '</br>';
+		modalHtmlTest += '</br>';
+		}	//end of for loop
+		modalHtmlTest += '<div class="col-sm-6">';
+		modalHtmlTest += '<h3 align="center">Total Price: '+total+'</h3>';
+		modalHtmlTest += '</div>';
+		modalHtmlTest += '<div class="modal-footer">';
+		modalHtmlTest += '<button id="cartBuyButton" type="button" class="btn btn-success btn-block">Buy Chosen Cars</button>';
+		modalHtmlTest += '</div>';
+		modalHtmlTest += '</div></div></div></div>';
+		$('#cartInfo').append(modalHtmlTest);
+		$('#cartInfo').modal();
+
+
+		for (var i = document.getElementsByTagName('button').length - 1; i >= 0; i--) {
+			if(document.getElementsByTagName('button')[i].id == "cartBuyButton"){
+				document.getElementsByTagName('button')[i].addEventListener("click",function(e){
+					$('#cartInfo').empty();
+					newToCart = [];
+					$.ajax({
+						url: '/payment',
+						method: 'PUT',
+						dataType: 'json',
+						contentType: "application/json; charset=utf-8",
+						success: function(result) {
+							console.log("Successfull request");
+						},
+						error: function(result) {
+							console.log("Something went wrong");
+						}
+					});
+					swal('Payment Successful','Dont Drink And Drive','success');
+				});
+			}
 		}
 	}
 
-	var total = 0;
-	$('#DisplayCart').click(function(){
-		//displayCart();
-		//var totalPrice = 0;
-		$('#cartButton').modal();
-		$('#cartInfo').empty();
 
-	  for(var i in newToCart){
-		$.ajax({
-			url: '/cars/'+newToCart[i].id,
-			method: 'GET',
-			dataType: 'json',
-			contentType: "application/json; charset=utf-8",
-			success: function(result) {
-				console.log("Successfull request");
-				if(result.length == 0){
-					console.error("The car was not found");
-					return;
-				}
-				//console.log(newToCart[i].count);
-				total += (result[0].count*result[0].price)
-				console.log(result[0].count*result[0].price);
-
-				appendInfoToCartModal(result);
-			},
-			error: function(result) {
-				console.log("Something went wrong");
-			}
-		});
-	  }
-	  console.log(total);
-	  total = 0;
-	})
-
-	function appendInfoToCartModal(car) {
+	/*function appendInfoToCartModal(car) {
 		//total.push(car[0].count*car[0].price);
 		console.log(total);
 		var modalHtml = '<div class="modal-dialog" id="carmodal">';
@@ -125,17 +145,8 @@ $(document).ready(function(e) {
 		$('#cartInfo').append(modalHtml);
 		$('#cartInfo').modal();
 
-	}
+	}*/
 
-
-	function getTotal(){
-		var t = 0;
-		for(var u in total){
-			t += total[u];
-			console.log(t);
-		}
-		total = [];
-	}
 
 	var modalHtml;
 	var butTemp;
@@ -171,8 +182,6 @@ $(document).ready(function(e) {
 			if(document.getElementsByTagName('button')[i].id == "AddNow"){
 				document.getElementsByTagName('button')[i].addEventListener("click",function(e){
 					$('#carInfo').empty();
-					//console.log(car[0].count);
-					//addItemToCart(car[0].id,car[0].brand,car[0].price,car[0].count);
 					addItemToCart(car[0]);
 					swal('This Car Is Added To Cart!','Buy Them Soon','success');
 				});

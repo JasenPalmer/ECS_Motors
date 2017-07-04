@@ -28,7 +28,6 @@
 				<ul class="nav navbar-nav navbar-left">
 				  <li class='active'><a href="/cars">Cars</a></li>
 				  <li><a href="/contact">Contact</a></li>
-				  <li id='Cart'><a href="/cart">Cart</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 				<!-- Seacrch and login -->
@@ -137,21 +136,29 @@
 			</div>
 		</div>
 
-		<!--Cart BUtton-->
-		<div class="row" style="padding-bottom: 30px;">
-				<div class="col-sm-4">
-					<button id="DisplayCart" type="button" class="btn btn-success btn-block">Display Cart</button>
-				</div>
-		</div>
-
+		
 		<!-- Latest Listings -->
 		<div style="padding-top: 50px;" class="container">
-			<div class="strike" style="padding-bottom: 50px;">
-				<span><h2>Cars For Sale</h2></span>
-			</div>
-			<div class="row" style="padding-bottom: 30px;">
-				<div class="col-sm-4">
 
+			<!--Cart BUtton-->
+<!-- 		<div class="row" style="padding-bottom: 30px;">
+				<div class="col-sm-4">
+					<button id="DisplayCart" type="button" class="btn btn-success btn-block pull-right">Display Cart</button>
+				</div>
+		</div> -->
+
+		<div class="row">
+    		<div class="col-lg-12">
+        		<button id="DisplayCart" type="button" class="btn btn-success pull-right">Display Cart</button>
+    			</div>
+		</div>
+
+		<div class="strike" style="padding-bottom: 50px;">
+				<span><h2>Cars For Sale</h2></span>
+		</div>
+
+		<div class="row" style="padding-bottom: 30px;">
+			<div class="col-sm-4">
 					<img id='1' class="img-responsive carClick" src="/img/cars-for-sale/1.jpg" alt="Ford" width="400" height="250">
 				</div>
 
@@ -201,11 +208,6 @@
 
 		<!--Cart info modal-->
 		<div id="cartInfo" class="modal fade" role="dialog">
-		</div>
-
-		<!--Buy Button Modal-->
-		<div id="cartButton" class="modal fade" role="dialog">
-		<button id="cartBuyButton" type="button" class="btn btn-success btn-block">Buy Chosen Cars</button>
 		</div>
 
 		<!-- Footer -->
