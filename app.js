@@ -405,6 +405,15 @@ app.get('/cars/:id', function(req, res) {
 	});
 });
 
+app.put('/cars/:id', function(req, res) {
+	var id = parseInt(req.params.id);
+	console.log("Car id: "+id);
+
+	var query = client.query("UPDATE cars SET count = (count+1) WHERE id = "+id+";");
+
+});
+
+
 app.get('/authorisedPage', isLoggedIn, function(req, res, next) {
 	console.log("REQ.USER: ");
 	console.log(req.user);

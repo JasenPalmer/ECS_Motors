@@ -28,7 +28,7 @@
 	            <ul class="nav navbar-nav navbar-left">
 	              <li class='active'><a href="/cars">Cars</a></li>
 	              <li><a href="/contact">Contact</a></li>
-	              <li><a href="/cart">Cart</a></li>
+	              <li id='Cart'><a href="/cart">Cart</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
 	            <!-- Seacrch and login -->
@@ -137,6 +137,15 @@
 			</div>
 		</div>
 
+	
+		<!--Cart BUtton-->
+		<div class="row" style="padding-bottom: 30px;">
+				<div class="col-sm-4">
+					<button id="DisplayCart" type="button" class="btn btn-success btn-block">Display Cart</button>
+				</div>
+		</div>
+
+
 		<!-- Latest Listings -->
 		<div style="padding-top: 50px;" class="container">
 			<div class="strike" style="padding-bottom: 50px;">
@@ -191,6 +200,16 @@
 		<!-- Car info modal -->
 		<div id="carInfo" class="modal fade" role="dialog">
 		</div>
+		
+		<!--Cart info modal-->		
+		<div id="cartInfo" class="modal fade" role="dialog">
+		</div>
+
+		<!--Buy Button Modal-->
+		<div id="cartButton" class="modal fade" role="dialog">
+		<button id="cartBuyButton" type="button" class="btn btn-success btn-block">Buy Chosen Cars</button>
+		</div>
+
 
 
 		<!-- Footer -->
