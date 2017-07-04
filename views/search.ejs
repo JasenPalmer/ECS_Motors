@@ -21,48 +21,18 @@
 		<% include ../views/partials/login-register %>
 
 		<!-- List of cars -->
-        <div style="padding-top: 50px;" class="container">
+		<div style="padding-top: 50px;" class="container">
 			<div class="strike" style="padding-bottom: 50px;">
 				<span>
 					<h1>Search Results</h1>
 				</span>
-		    </div>
-                <% for (var i = 0; i < data.rows.length; i++){ %>
-                    <div class="col-sm-4">
-                        <% var image = "/img/cars-for-sale/" + JSON.stringify(data.rows[i].id) + ".jpg"%>
-    					<img id= <%= JSON.stringify(data.rows[i].id) %> class="img-responsive carClick" src=<%= image %> alt= <%= JSON.stringify(data.rows[i].brand) %>>
-    				</div>
-                <% } %>
-<!--
-			<div class="row" style="padding-bottom: 30px;">
-				<div class="col-sm-4">
-
-					<img id="4" class="img-responsive carClick" src="/img/cars-for-sale/4.jpg" alt="Mazda" width="400" height="250">
-				</div>
-
-				<div class="col-sm-4">
-					<img id="5" class="img-responsive carClick" src="/img/cars-for-sale/5.jpg" alt="Mazda">
-				</div>
-
-				<div class="col-sm-4">
-					<img id="6" class="img-responsive carClick" src="/img/cars-for-sale/6.jpg" alt="Mazda" width="400" height="250">
-				</div>
 			</div>
-
-			<div class="row" style="padding-bottom: 30px;">
-				<div class="col-sm-4">
-
-					<img id="7" class="img-responsive carClick" src="/img/cars-for-sale/7.jpg" alt="Rover" width="400" height="250">
-				</div>
-
-				<div class="col-sm-4">
-					<img id="8" class="img-responsive carClick" src="/img/cars-for-sale/8.jpg" alt="Rover" width="400" height="250">
-				</div>
-
-				<div class="col-sm-4">
-					<img id="9" class="img-responsive carClick" src="/img/cars-for-sale/9.jpg" alt="Rover" width="400" height="250">
-				</div>
-		 	</div> -->
+				<% for (var i = 0; i < data.rows.length; i++){ %>
+					<div class="col-sm-4">
+						<% var image = "/img/cars-for-sale/" + JSON.stringify(data.rows[i].id) + ".jpg"%>
+						<img id= <%= JSON.stringify(data.rows[i].id) %> class="img-responsive carClick" src=<%= image %> alt= <%= JSON.stringify(data.rows[i].brand) %>>
+					</div>
+				<% } %>
 
 		</div>
 

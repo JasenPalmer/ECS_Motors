@@ -10,25 +10,25 @@ $(document).ready(function(e) {
 		if(user === "" || pass === ""){return;}
 		console.log("Username: "+user+" Password: "+pass);
 		$.ajax({
-	      url: '/users/login',
-	      method: 'POST',
-	      data: JSON.stringify({
-	      	username: user,
-	      	password: pass
-	      }),
-	      dataType: 'json',
-	      contentType: "application/json; charset=utf-8",
-	      success: function(result) {
-	      	console.log(result);
-	      	if(result.redirect) {
-	      		window.location.href = result.redirect;
-	      	}
-	      },
-	      error: function(result) {
-	        console.log(result);
-	      }
-	  	});
-	  	$('#user').val("");
+		  url: '/users/login',
+		  method: 'POST',
+		  data: JSON.stringify({
+			username: user,
+			password: pass
+		  }),
+		  dataType: 'json',
+		  contentType: "application/json; charset=utf-8",
+		  success: function(result) {
+			console.log(result);
+			if(result.redirect) {
+				window.location.href = result.redirect;
+			}
+		  },
+		  error: function(result) {
+			console.log(result);
+		  }
+		});
+		$('#user').val("");
 		$('#pass').val("");
 	});
 
@@ -59,11 +59,11 @@ $(document).ready(function(e) {
 			success: function(result) {
 				//console.log(result.redirect);
 				window.location = result.redirect;
-	      		console.log("Successfully added new user");
-		    },
-		    error: function(result) {
-		    	console.log("Failed to add new user");
-		    }
+				console.log("Successfully added new user");
+			},
+			error: function(result) {
+				console.log("Failed to add new user");
+			}
 		});
 		$('#firstname').val("");
 		$('#lastname').val("");
@@ -74,27 +74,27 @@ $(document).ready(function(e) {
 	});
 
 	$('#srch-btn').click(function(event) {
-        event.preventDefault();
+		event.preventDefault();
 		var query = $('#srch-trm').val();
 		if(query === ""){return;}
 
-    $.ajax({
-      url:'/search',
-      method: 'POST',
-      data: JSON.stringify({
-        'query': query
-      }),
-      dataType: 'json',
-      contentType: "application/json; charset=tf-8",
-      success: function(result) {
-          console.log(result)
-        window.location = '/search';
-        },
-        error: function(result) {
-            console.log(result)
-          window.location = '/search';
-        }
-    });
+	$.ajax({
+	  url:'/search',
+	  method: 'POST',
+	  data: JSON.stringify({
+		'query': query
+	  }),
+	  dataType: 'json',
+	  contentType: "application/json; charset=tf-8",
+	  success: function(result) {
+		  console.log(result)
+		window.location = '/search';
+		},
+		error: function(result) {
+			console.log(result)
+		  window.location = '/search';
+		}
+	});
 	});
 
 	$('#google-login').click(function () {
@@ -104,8 +104,8 @@ $(document).ready(function(e) {
 		});
 	});
 
-    $('#butSub').click(function() {
-       swal('Get Back To You Soon!','Email Sent Successfully','success');
-    });
+	$('#butSub').click(function() {
+	   swal('Get Back To You Soon!','Email Sent Successfully','success');
+	});
 
 });
