@@ -56,8 +56,8 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use(googlepass.initialize());
 app.use(googlepass.session());
@@ -82,117 +82,117 @@ googlepass.deserializeUser(function(user, done) {
 
 
 
-passport.serializeUser(function(user, done) {
-	done(null, user.id);
-});
+// passport.serializeUser(function(user, done) {
+// 	done(null, user.id);
+// });
 
-passport.deserializeUser(function(token, done) {
-	var tokenVal = parseInt(token);
-	if(tokenVal > 1000) { // need this to distinguish between google oauth and local users
-		isUser(token, function(user) {
-			var fixed = {
-					    id: user.token,
-					    firstname: user.firstname,
-					    lastname: user.lastname,
-					    username: user.username,
-					    email: user.email
-					}
-			done(null, fixed);
-		});
-	}
-	else {
-		findById(tokenVal, function(err, user) {
-			if(err) {
-				done(err);
-			}
-			if(user) {
-				done(null, user);
-			}
-			done(user);
-		});
-	}
-});
+// passport.deserializeUser(function(token, done) {
+// 	var tokenVal = parseInt(token);
+// 	if(tokenVal > 1000) { // need this to distinguish between google oauth and local users
+// 		isUser(token, function(user) {
+// 			var fixed = {
+// 					    id: user.token,
+// 					    firstname: user.firstname,
+// 					    lastname: user.lastname,
+// 					    username: user.username,
+// 					    email: user.email
+// 					}
+// 			done(null, fixed);
+// 		});
+// 	}
+// 	else {
+// 		findById(tokenVal, function(err, user) {
+// 			if(err) {
+// 				done(err);
+// 			}
+// 			if(user) {
+// 				done(null, user);
+// 			}
+// 			done(user);
+// 		});
+// 	}
+// });
 
-passport.use(new localStrategy({
-		passReqToCallback: true
-	},
-	function(req,username, password, done) {
-		findByUsername(username, function(err, user) {
-			if(err) {
-				console.log("Which");
-				return done(err);
-			}
-			if(!user) {
-				console.log("one");
-				return done(null, false, {message: 'Incorrect username'});
-			}
+// passport.use(new localStrategy({
+// 		passReqToCallback: true
+// 	},
+// 	function(req,username, password, done) {
+// 		findByUsername(username, function(err, user) {
+// 			if(err) {
+// 				console.log("Which");
+// 				return done(err);
+// 			}
+// 			if(!user) {
+// 				console.log("one");
+// 				return done(null, false, {message: 'Incorrect username'});
+// 			}
 
-			if(!comparePass(user.password, password)) {
-				console.log("is being");
-				return done(null, false, {message: 'Incorrect password'});
-			}
-			console.log("called?");
-			return done(null, user);
-		});
-	}
-));
+// 			if(!comparePass(user.password, password)) {
+// 				console.log("is being");
+// 				return done(null, false, {message: 'Incorrect password'});
+// 			}
+// 			console.log("called?");
+// 			return done(null, user);
+// 		});
+// 	}
+// ));
 
-function comparePass(pass, pass2) {
-	return true;
-}
+// function comparePass(pass, pass2) {
+// 	return true;
+// }
 
 
-function findByUsername(username, callback) {
-	var q = squel.select().from("users").where("username = ?", username).toString();
-	//var q = "SELECT * FROM users WHERE username = '"+username+"';";
-	client.query(q, function(err, results) {
-		if(err) {
-			callback && callback(err, false);
-		}
-		console.log("Row from DB");
-		console.log(results.rows);
-		if(results.rows[0] == undefined) {
-			callback && callback(null, false);
-			return;
-		}
-		var user = {
-			id: results.rows[0].id,
-			firstname: results.rows[0].firstname,
-			lastname: results.rows[0].lastname,
-			username: results.rows[0].username,
-			email: results.rows[0].email
-		}
-		console.log("Constructed user");
-		console.log(user);
-		callback && callback(null, user);
-	});
-}
+// function findByUsername(username, callback) {
+// 	var q = squel.select().from("users").where("username = ?", username).toString();
+// 	//var q = "SELECT * FROM users WHERE username = '"+username+"';";
+// 	client.query(q, function(err, results) {
+// 		if(err) {
+// 			callback && callback(err, false);
+// 		}
+// 		console.log("Row from DB");
+// 		console.log(results.rows);
+// 		if(results.rows[0] == undefined) {
+// 			callback && callback(null, false);
+// 			return;
+// 		}
+// 		var user = {
+// 			id: results.rows[0].id,
+// 			firstname: results.rows[0].firstname,
+// 			lastname: results.rows[0].lastname,
+// 			username: results.rows[0].username,
+// 			email: results.rows[0].email
+// 		}
+// 		console.log("Constructed user");
+// 		console.log(user);
+// 		callback && callback(null, user);
+// 	});
+// }
 
-function findById(id, callback) {
-	var q = "SELECT * FROM users WHERE id = "+id+";";
-	console.log("query: "+q);
-	client.query(q, function(err, results) {
-		if(err) {
-			console.log("what");
-			callback && callback(err, false);
-		}
-		if(results.rows == []) {
-			console.log("IS");
-			callback && callback(null, false);
-			return false;
-		}
-		console.log("Happening");
-		var user = {
-			id: results.rows[0].id,
-			firstname: results.rows[0].firstname,
-			lastname: results.rows[0].lastname,
-			username: results.rows[0].username,
-			email: results.rows[0].email
-		}
-		callback && callback(null, user);
-		return user;
-	});
-}
+// function findById(id, callback) {
+// 	var q = "SELECT * FROM users WHERE id = "+id+";";
+// 	console.log("query: "+q);
+// 	client.query(q, function(err, results) {
+// 		if(err) {
+// 			console.log("what");
+// 			callback && callback(err, false);
+// 		}
+// 		if(results.rows == []) {
+// 			console.log("IS");
+// 			callback && callback(null, false);
+// 			return false;
+// 		}
+// 		console.log("Happening");
+// 		var user = {
+// 			id: results.rows[0].id,
+// 			firstname: results.rows[0].firstname,
+// 			lastname: results.rows[0].lastname,
+// 			username: results.rows[0].username,
+// 			email: results.rows[0].email
+// 		}
+// 		callback && callback(null, user);
+// 		return user;
+// 	});
+// }
 
 
 
@@ -324,11 +324,24 @@ app.post('/users/register', function(req,res) {
 });
 
 
-app.post('/users/login', passport.authenticate('local', {failureRedirect: '/login'}),
-	function(req, res) {
-	res.send({redirect: '/'});
-	}
-);
+app.post('/users/login', function(req, res) {
+	var username = req.body.username;
+	var password = req.body.password;
+
+	findByUsername(username, function(err, user) {
+		if(err) {
+			console.log(err);
+			return;
+		}
+		if(!user) {
+			console.log(err);
+			return;
+		}
+		res.send({redirect: '/',
+		user: user});
+	})
+});
+
 
 app.get('/auth/google',
 	googlepass.authenticate('google',
