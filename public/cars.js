@@ -64,9 +64,10 @@ $(document).ready(function(e) {
 		}
 	}
 
-	
+	var total = 0;
 	$('#DisplayCart').click(function(){
 		//displayCart();
+		//var totalPrice = 0;
 		$('#cartButton').modal();
 		$('#cartInfo').empty();
 
@@ -83,19 +84,23 @@ $(document).ready(function(e) {
 					return;
 				}
 				//console.log(newToCart[i].count);
+				total += (result[0].count*result[0].price)
+				console.log(result[0].count*result[0].price);
+				
 				appendInfoToCartModal(result);
 			},
 			error: function(result) {
 				console.log("Something went wrong");
 			}
 		});
-
 	  }
-	  
+	  console.log(total);
+	  total = 0;
 	})
-
+	
 	function appendInfoToCartModal(car) {
-		//console.log(car[0].count);
+		//total.push(car[0].count*car[0].price);
+		console.log(total);
 		var modalHtml = '<div class="modal-dialog" id="carmodal">';
 		modalHtml += '<div class="modal-content">';
 		modalHtml += '<div class="modal-header">';
@@ -121,12 +126,18 @@ $(document).ready(function(e) {
 
 		$('#cartInfo').append(modalHtml);
 		$('#cartInfo').modal();
+
 	}
+		
 
-
-
-
-
+	function getTotal(){
+		var t = 0;
+		for(var u in total){
+			t += total[u];
+			console.log(t);
+		}
+		total = [];
+	}
 
 	var modalHtml; 
 	var butTemp;
