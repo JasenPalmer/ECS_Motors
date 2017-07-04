@@ -20,6 +20,7 @@ $(document).ready(function(e) {
 	      contentType: "application/json; charset=utf-8",
 	      success: function(result) {
 	      	console.log("Successfully sent");
+	      	window.location.reload();
 	      },
 	      error: function(result) {
 	        console.log(result);

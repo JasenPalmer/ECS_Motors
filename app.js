@@ -69,29 +69,15 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(token, done) {
 	console.log("deserializeUser: "+token);
 	var tokenVal = parseInt(token);
-	if(tokenVal > 100) {
-		isUser(token, function(user) {
-			var fixed = {
-					    id: user.token,
-					    firstname: user.firstname,
-					    lastname: user.lastname,
-					    username: user.username,
-					    email: user.email
-					}
-			done(null, fixed);
-		});
-	}
-	else {
-		findById(tokenVal, function(err, user) {
-			if(err) {
-				done(err);
-			}
-			if(user) {
-				done(null, user);
-			}
-			done(user);
-		});
-	}
+	findById(tokenVal, function(err, user) {
+		if(err) {
+			done(err);
+		}
+		if(user) {
+			done(null, user);
+		}
+		done(user);
+	});
 });
 
 passport.use(new localStrategy({
@@ -311,11 +297,10 @@ app.post('/users/register', function(req,res) {
 });
 
 
-app.post('/users/login', passport.authenticate('local', 
-	{successRedirect: '/',
-	failureRedirect: '/',
-	failureFlash: true}
-));
+app.post('/users/login', passport.authenticate('local', {failureRedirect: '/'}),
+	function(req, res) {
+		res.send({redirect: '/'});
+	});
 
 app.get('/auth/google', 
 	passport.authenticate('google', 
