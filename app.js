@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var pg = require('pg');
 var passport = require('passport');
+var googlepass = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var bcrypt = require('bcrypt');
 var session = require('express-session');
@@ -57,6 +58,29 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(googlepass.initialize());
+app.use(googlepass.session());
+
+
+googlepass.serializeUser(function(user, done) {
+	done(null, user.id);
+});
+
+googlepass.deserializeUser(function(user, done) {
+	isUser(token, function(user) {
+		var fixed = {
+				    id: user.token,
+				    firstname: user.firstname,
+				    lastname: user.lastname,
+				    username: user.username,
+				    email: user.email
+				};
+		done(null, fixed);
+	});
+})
+
+
 
 passport.serializeUser(function(user, done) {
 	done(null, user.id);
@@ -172,7 +196,7 @@ function findById(id, callback) {
 
 
 
-passport.use(new GoogleStrategy( {
+googlepass.use(new GoogleStrategy( {
 	clientID: '1089414033551-gvss8q3gd8v816aivucn4e0sntkqq2d8.apps.googleusercontent.com',
 	clientSecret: 'oON3PNNIn2u1sObvA1wBY3Am',
 	callbackURL: "https://ecsmotors.herokuapp.com/auth/google/callback",
@@ -307,7 +331,7 @@ app.post('/users/login', passport.authenticate('local', {failureRedirect: '/logi
 );
 
 app.get('/auth/google',
-	passport.authenticate('google',
+	googlepass.authenticate('google',
 		{scope:['openid email profile']})
 );
 
