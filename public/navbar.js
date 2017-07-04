@@ -8,7 +8,6 @@ $(document).ready(function(e) {
 		var user = $('#user').val();
 		var pass = $('#pass').val();
 		if(user === "" || pass === ""){return;}
-		console.log("Username: "+user+" Password: "+pass);
 		$.ajax({
 	      url: '/users/login',
 	      method: 'POST',
