@@ -8,12 +8,13 @@ Node (should be on lab machines) but [click here for other machines](https://nod
 Heroku CLI (should be on lab machines) but [click here for other machines](https://devcenter.heroku.com/articles/heroku-cli)
 
 
-## To Run
+## To Run locally
 
 To run locally lab machines (cause thats what i curently have and havent tried anywhere ele)
 - Clone/Download the repo and navigate into ECS_Motors directory
-- in terminal run `node index.js` OR `npm start`
-- navigate to localhost:5000 in your browser
+- run `npm install` to install dependences
+- run `node app.js` to start server
+- navigate to localhost:8080 in your browser to start browsing the site :)
 
 
 ## Deploying to Heroku
