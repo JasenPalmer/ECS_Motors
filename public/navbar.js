@@ -33,11 +33,20 @@ $(document).ready(function(e) {
 		$('#registerModal').modal();
 	});
 
+	function isEmail(email) {
+ 	 var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  	return regex.test(email);
+}
+
 	$('#registerUser').click(function() {
 		var firstname = $('#firstname').val();
 		var lastname = $('#lastname').val();
 		var username = $('#username').val();
 		var email = $('#email').val();
+		if(!isEmail(email)) {
+			alert('Email Invalid, please enter a valid Email address');//,'Enter valid Email address','error');
+			return;
+		}
 		var password = $('#password').val();
 		if(firstname === "" || lastname === "" || username === "" || email ===
 			"") {return;}
